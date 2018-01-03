@@ -42,7 +42,7 @@ class Product(models.Model):
 class PurchaseItem(models.Model):
     order = models.ForeignKey(Purchase, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
-    #price = models.DecimalField(max_digits=10, decimal_places=2)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     weigth = models.DecimalField(max_digits=10, decimal_places=2)
     animal_ref = models.CharField(max_length=100)
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from egresos.models import Product
 
 class Client(models.Model):
     client = models.CharField(max_length=140)
@@ -28,21 +29,12 @@ class Sale (models.Model):
     def __str__(self):
         return "Venta no. {}".format(self.id)
 
-
-class Product(models.Model):
-    name = models.CharField(max_length= 140)
-    category = models.CharField(max_length = 140)
-    uprice = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return self.name
-
 #Prueba
 
 class SaleItem(models.Model):
-    order = models.ForeignKey(Sale, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
-    #price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale = models.ForeignKey(Sale, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.CASCADE)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     weigth = models.DecimalField(max_digits=10, decimal_places=2)
     animal_ref = models.CharField(max_length=100)
 
