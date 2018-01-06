@@ -1,5 +1,12 @@
 from django.db import models
 
+class Lote(models.Model):
+    name = models.CharField(max_length=130)
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
 class Animal(models.Model):
     MONTHS = (('Enero','Enero'),
               ('Febrero', 'Febrero'),
@@ -25,7 +32,7 @@ class Animal(models.Model):
     color = models.CharField(max_length=150)
     comentarios = models.TextField()
     owner = models.CharField(max_length=150)
-    lote_corral = models.CharField(max_length=30)
+    lote_corral = models.ForeignKey(Lote, related_name='animals', on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
     numero_semana = models.PositiveIntegerField(default=0)
     ano = models.PositiveIntegerField(default=2010)
