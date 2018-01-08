@@ -1,11 +1,46 @@
 from django.db import models
 
+class Corral(models.Model):
+    MONTHS = (('Enero', 'Enero'),
+              ('Febrero', 'Febrero'),
+              ('Marzo', 'Marzo'),
+              ('Abril', 'Abril'),
+              ('Mayo', 'Mayo'),
+              ('Junio', 'Junio'),
+              ('Julio', 'Julio'),
+              ('Agosto', 'Agosto'),
+              ('Septiembre', 'Septiembre'),
+              ('Octubre', 'Octubre'),
+              ('Noviembre', 'Noviembre'),
+              ('Diciembre', 'Diciembre'),
+              )
+    fecha_generacion = models.DateTimeField(auto_now_add=False, db_index=True)
+    no_corral = models.PositiveIntegerField(default=0)
+    comentarios = models.TextField()
+    status = models.BooleanField(default=False)
+    numero_semana = models.PositiveIntegerField(default=0)
+    ano = models.PositiveIntegerField(default=2010)
+    numero_serial = models.CharField(max_length=100)
+    mes = models.CharField(max_length=100, choices=MONTHS, )
+    cuarto = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return "Corral no. {}".format(self.id)
+
 class Lote(models.Model):
     name = models.CharField(max_length=130)
     status = models.BooleanField(default=False)
+    corral = models.ForeignKey(Corral, related_name='lotes', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+class Alimento(models.Model):
+    costo = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return "Alimentación no. {}".format(self.id)
 
 class Animal(models.Model):
     MONTHS = (('Enero','Enero'),
@@ -33,6 +68,7 @@ class Animal(models.Model):
     comentarios = models.TextField()
     owner = models.CharField(max_length=150)
     lote_corral = models.ForeignKey(Lote, related_name='animals', on_delete=models.CASCADE)
+    alimento = models.ForeignKey(Alimento, related_name='animals', on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
     numero_semana = models.PositiveIntegerField(default=0)
     ano = models.PositiveIntegerField(default=2010)
@@ -45,5 +81,6 @@ class Animal(models.Model):
 
     def __str__(self):
         return self.arete_rancho
+
 
 
