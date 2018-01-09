@@ -35,12 +35,7 @@ class Lote(models.Model):
     def __str__(self):
         return self.name
 
-class Alimento(models.Model):
-    costo = models.DecimalField(max_digits=10, decimal_places=2)
-    cantidad = models.PositiveIntegerField(default=0)
 
-    def __str__(self):
-        return "Alimentación no. {}".format(self.id)
 
 class Animal(models.Model):
     MONTHS = (('Enero','Enero'),
@@ -67,20 +62,32 @@ class Animal(models.Model):
     color = models.CharField(max_length=150)
     comentarios = models.TextField()
     owner = models.CharField(max_length=150)
-    lote_corral = models.ForeignKey(Lote, related_name='animals', on_delete=models.CASCADE)
-    alimento = models.ForeignKey(Alimento, related_name='animals', on_delete=models.CASCADE)
+    lote = models.ForeignKey(Lote, related_name='animals', on_delete=models.CASCADE, blank=True, null=True)
+    
     status = models.BooleanField(default=False)
-    numero_semana = models.PositiveIntegerField(default=0)
-    ano = models.PositiveIntegerField(default=2010)
-    mes = models.CharField(max_length=100, choices=MONTHS, )
-    cuarto = models.CharField(max_length=100)
     costo_inicial = models.DecimalField(max_digits=10, decimal_places=2)
     fierro_original = models.ImageField(upload_to='fierrosO/')
     fierro_nuevo = models.ImageField(upload_to='fierrosN/')
     ref_factura_original = models.CharField(max_length=100)
 
+    numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
+    ano = models.PositiveIntegerField(default=2010, blank=True, null=True)
+    mes = models.CharField(max_length=100, choices=MONTHS, blank=True, null=True)
+    cuarto = models.CharField(max_length=100, blank=True, null=True)
+    
     def __str__(self):
         return self.arete_rancho
+
+
+class Alimento(models.Model):
+    animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.PROTECT, null=True, blank=True)
+    costo = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad = models.PositiveIntegerField(default=0)
+    #animal = models.ForeignKey(Animal, related_name='alimentos', on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return "Alimentación no. {} ".format(self.id)
 
 
 
