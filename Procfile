@@ -1,1 +1,1 @@
-web:gunicorn adminArnu.wsgi
+gunicorn:web adminArnu.wsgi
