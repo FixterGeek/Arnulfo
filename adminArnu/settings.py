@@ -155,3 +155,12 @@ AUTHENTICATION_BACKENDS = (
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+###For heroku
+import os  
+from django.core.wsgi import get_wsgi_application  
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adminArnu.settings")  
+application = get_wsgi_application()  
+from whitenoise.django import DjangoWhiteNoise  
+application = DjangoWhiteNoise(application)
