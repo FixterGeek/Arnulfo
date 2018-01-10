@@ -7,6 +7,7 @@ from rest_framework import status, views
 from rest_framework.response import Response
 from .serializers import UserSerializer
 
+
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -32,3 +33,8 @@ class LogoutView(views.APIView):
 	def get(self, request):
 		logout(request)
 		return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+class UserView(views.APIView):
+	def get(self, request):
+		user = request.user
+		return Response(UserSerializer(user).data)

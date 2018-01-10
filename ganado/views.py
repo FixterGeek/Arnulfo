@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer
 from .models import Animal, Lote, Alimento, Corral
+from .pagination import AnimalPagination
 
 
 #VIews for the API
@@ -9,6 +10,7 @@ from .models import Animal, Lote, Alimento, Corral
 class AnimalViewSet(viewsets.ModelViewSet):
 	queryset = Animal.objects.all()
 	serializer_class = AnimalSerializer
+	pagination_class = AnimalPagination
 
 class LoteViewSet(viewsets.ModelViewSet):
 	queryset = Lote.objects.all()
