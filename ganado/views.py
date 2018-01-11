@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer
-from .models import Animal, Lote, Alimento, Corral
+from .models import Animal, Lote, GastoAnimal, Corral
 from .pagination import AnimalPagination
 
 
@@ -21,5 +21,5 @@ class CorralViewSet(viewsets.ModelViewSet):
 	serializer_class = CorralSerializer
 
 class AlimentoViewSet(viewsets.ModelViewSet):
-	queryset = Alimento.objects.all()
+	queryset = GastoAnimal.objects.all()
 	serializer_class = AlimentoSerializer

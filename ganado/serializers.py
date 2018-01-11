@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Animal, Lote, Corral, Alimento
+from .models import Animal, Lote, Corral, GastoAnimal
 
 
 
@@ -22,7 +22,7 @@ class BasicCorralSerializer(serializers.ModelSerializer):
 
 class AlimentoSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Alimento
+		model = GastoAnimal
 		fields = '__all__'
 
 class AnimalSerializer(serializers.ModelSerializer):
