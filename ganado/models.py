@@ -1,28 +1,29 @@
 from django.db import models
 
 class Corral(models.Model):
-    MONTHS = (('Enero', 'Enero'),
-              ('Febrero', 'Febrero'),
-              ('Marzo', 'Marzo'),
-              ('Abril', 'Abril'),
-              ('Mayo', 'Mayo'),
-              ('Junio', 'Junio'),
-              ('Julio', 'Julio'),
-              ('Agosto', 'Agosto'),
-              ('Septiembre', 'Septiembre'),
-              ('Octubre', 'Octubre'),
-              ('Noviembre', 'Noviembre'),
-              ('Diciembre', 'Diciembre'),
-              )
+    # MONTHS = (('Enero', 'Enero'),
+    #           ('Febrero', 'Febrero'),
+    #           ('Marzo', 'Marzo'),
+    #           ('Abril', 'Abril'),
+    #           ('Mayo', 'Mayo'),
+    #           ('Junio', 'Junio'),
+    #           ('Julio', 'Julio'),
+    #           ('Agosto', 'Agosto'),
+    #           ('Septiembre', 'Septiembre'),
+    #           ('Octubre', 'Octubre'),
+    #           ('Noviembre', 'Noviembre'),
+    #           ('Diciembre', 'Diciembre'),
+    #           )
     fecha_generacion = models.DateTimeField(auto_now_add=False, db_index=True)
     no_corral = models.PositiveIntegerField(default=0)
     comentarios = models.TextField()
     status = models.BooleanField(default=False)
-    numero_semana = models.PositiveIntegerField(default=0)
-    ano = models.PositiveIntegerField(default=2010)
     numero_serial = models.CharField(max_length=100)
-    mes = models.CharField(max_length=100, choices=MONTHS, )
-    cuarto = models.PositiveIntegerField(default=0)
+    # numero_semana = models.PositiveIntegerField(default=0)
+    # ano = models.PositiveIntegerField(default=2010)
+    
+    # mes = models.CharField(max_length=100, choices=MONTHS, )
+    # cuarto = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return "Corral no. {}".format(self.id)
@@ -38,20 +39,20 @@ class Lote(models.Model):
 
 
 class Animal(models.Model):
-    MONTHS = (('Enero','Enero'),
-              ('Febrero', 'Febrero'),
-              ('Marzo', 'Marzo'),
-              ('Abril', 'Abril'),
-              ('Mayo', 'Mayo'),
-              ('Junio', 'Junio'),
-              ('Julio', 'Julio'),
-              ('Agosto', 'Agosto'),
-              ('Septiembre', 'Septiembre'),
-              ('Octubre', 'Octubre'),
-              ('Noviembre', 'Noviembre'),
-              ('Diciembre', 'Diciembre'),
-              )
-    arete_siniga = models.CharField(max_length=30)
+    # MONTHS = (('Enero','Enero'),
+    #           ('Febrero', 'Febrero'),
+    #           ('Marzo', 'Marzo'),
+    #           ('Abril', 'Abril'),
+    #           ('Mayo', 'Mayo'),
+    #           ('Junio', 'Junio'),
+    #           ('Julio', 'Julio'),
+    #           ('Agosto', 'Agosto'),
+    #           ('Septiembre', 'Septiembre'),
+    #           ('Octubre', 'Octubre'),
+    #           ('Noviembre', 'Noviembre'),
+    #           ('Diciembre', 'Diciembre'),
+    #           )
+    # arete_siniga = models.CharField(max_length=30)
     arete_rancho = models.CharField(max_length=30)
     fecha_entrada = models.DateTimeField(auto_now_add=False, db_index=True)
     fecha_registro = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -70,10 +71,10 @@ class Animal(models.Model):
     fierro_nuevo = models.ImageField(upload_to='fierrosN/')
     ref_factura_original = models.CharField(max_length=100)
 
-    numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
-    ano = models.PositiveIntegerField(default=2010, blank=True, null=True)
-    mes = models.CharField(max_length=100, choices=MONTHS, blank=True, null=True)
-    cuarto = models.CharField(max_length=100, blank=True, null=True)
+    # numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
+    # ano = models.PositiveIntegerField(default=2010, blank=True, null=True)
+    # mes = models.CharField(max_length=100, choices=MONTHS, blank=True, null=True)
+    # cuarto = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         return self.arete_rancho
@@ -88,11 +89,20 @@ class GastoAnimal(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.PositiveIntegerField(default=0)
     tipo = models.CharField(max_length=100, choices=TIPO, blank=True, null=True)
-    #animal = models.ForeignKey(Animal, related_name='alimentos', on_delete=models.CASCADE)
+    
 
 
     def __str__(self):
-        return "Alimentación no. {} ".format(self.id)
+        return "Gasto no. {}, {} ".format(self.id, self.tipo)
+
+class Peso(models.Model):
+  created = models.DateTimeField(auto_now_add=True)
+  peso = models.DecimalField(max_digits=10, decimal_places=2)
+  animal = models.ForeignKey(Animal, related_name='pesadas', on_delete=models.PROTECT)
+
+  def __str__(self):
+    return "animal {} weigths {} kg".format(self.animal.id, self.peso)
+
 
 
 
