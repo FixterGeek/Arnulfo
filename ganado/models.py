@@ -103,6 +103,8 @@ class Peso(models.Model):
   def __str__(self):
     return "animal {} weigths {} kg".format(self.animal.id, self.peso)
 
+  #Listo Papud! vamo a darle
+
 
 
 
