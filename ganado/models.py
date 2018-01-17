@@ -17,7 +17,7 @@ class Corral(models.Model):
     fecha_generacion = models.DateTimeField(auto_now_add=False, db_index=True)
     no_corral = models.PositiveIntegerField(default=0)
     comentarios = models.TextField()
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     numero_serial = models.CharField(max_length=100)
     # numero_semana = models.PositiveIntegerField(default=0)
     # ano = models.PositiveIntegerField(default=2010)
@@ -30,7 +30,7 @@ class Corral(models.Model):
 
 class Lote(models.Model):
     name = models.CharField(max_length=130)
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     corral = models.ForeignKey(Corral, related_name='lotes', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -52,7 +52,12 @@ class Animal(models.Model):
     #           ('Noviembre', 'Noviembre'),
     #           ('Diciembre', 'Diciembre'),
     #           )
-    # arete_siniga = models.CharField(max_length=30)
+    TIPOA = (('becerro', 'becerro'),
+            ('toro', 'toro'),
+            ('vaca', 'vaca'),
+            ('vaquilla', 'vaquilla')
+            )
+    arete_siniga = models.CharField(max_length=30, blank=True, null=True)
     arete_rancho = models.CharField(max_length=30)
     fecha_entrada = models.DateTimeField(auto_now_add=False, db_index=True)
     fecha_registro = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -64,8 +69,9 @@ class Animal(models.Model):
     comentarios = models.TextField()
     owner = models.CharField(max_length=150)
     lote = models.ForeignKey(Lote, related_name='animals', on_delete=models.CASCADE, blank=True, null=True)
+    tipo_animal = models.CharField(max_length=100, choices=TIPOA, blank=True, null=True)
     
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     costo_inicial = models.DecimalField(max_digits=10, decimal_places=2)
     fierro_original = models.ImageField(upload_to='fierrosO/')
     fierro_nuevo = models.ImageField(upload_to='fierrosN/')
@@ -101,9 +107,8 @@ class Peso(models.Model):
   animal = models.ForeignKey(Animal, related_name='pesadas', on_delete=models.PROTECT)
 
   def __str__(self):
-    return "animal {} weigths {} kg".format(self.animal.id, self.peso)
+    return "Animal {} Weigths {} kg".format(self.animal.id, self.peso)
 
-  #Listo Papud! vamo a darle
 
 
 
