@@ -14,7 +14,7 @@ class Corral(models.Model):
     #           ('Noviembre', 'Noviembre'),
     #           ('Diciembre', 'Diciembre'),
     #           )
-    fecha_generacion = models.DateTimeField(auto_now_add=False, db_index=True)
+    fecha_generacion = models.DateTimeField(auto_now_add=True, db_index=True)
     no_corral = models.PositiveIntegerField(default=0)
     comentarios = models.TextField()
     status = models.BooleanField(default=True)
