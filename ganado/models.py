@@ -31,7 +31,7 @@ class Corral(models.Model):
 class Lote(models.Model):
     name = models.CharField(max_length=130)
     status = models.BooleanField(default=True)
-    corral = models.ForeignKey(Corral, related_name='lotes', on_delete=models.CASCADE)
+    corral = models.ForeignKey(Corral, related_name='lotes', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
