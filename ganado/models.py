@@ -14,7 +14,7 @@ class Corral(models.Model):
     #           ('Noviembre', 'Noviembre'),
     #           ('Diciembre', 'Diciembre'),
     #           )
-    fecha_generacion = models.DateTimeField(auto_now_add=False, db_index=True)
+    fecha_generacion = models.DateTimeField(auto_now_add=True, db_index=True)
     no_corral = models.PositiveIntegerField(default=0)
     comentarios = models.TextField()
     status = models.BooleanField(default=True)
@@ -31,7 +31,7 @@ class Corral(models.Model):
 class Lote(models.Model):
     name = models.CharField(max_length=130)
     status = models.BooleanField(default=True)
-    corral = models.ForeignKey(Corral, related_name='lotes', on_delete=models.CASCADE)
+    corral = models.ForeignKey(Corral, related_name='lotes', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
