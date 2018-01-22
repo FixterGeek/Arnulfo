@@ -22,12 +22,14 @@ from django.views.static import serve
 
 from ganado import urls as ganadoUrls
 from accounts import urls as authUrls
+from egresos import urls as egresosUrls
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('api/ganado/', include(ganadoUrls, namespace='ganado-urls')),
     path('api/auth/', include(authUrls, namespace='auth-urls')),
+    path('api/egresos/', include(egresosUrls, namespace='egresos-urls')),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(
         regex=r'^media/(?P<path>.*)$',
