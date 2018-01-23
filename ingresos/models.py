@@ -11,7 +11,7 @@ class Client(models.Model):
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
 
     def __str__(self):
-        return self.cliente
+        return self.client
 
 
 class Sale (models.Model):
