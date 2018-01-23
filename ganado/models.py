@@ -91,7 +91,7 @@ class GastoAnimal(models.Model):
     ('Alimento','Alimento'),
     ('Vacuna', 'Vacuna'))
 
-    animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.PROTECT, null=True, blank=True)
+    animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.CASCADE, null=True, blank=True)
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.PositiveIntegerField(default=0)
     tipo = models.CharField(max_length=100, choices=TIPO, blank=True, null=True)

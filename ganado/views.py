@@ -27,7 +27,7 @@ class LoteViewSet(viewsets.ModelViewSet):
 		if self.action == 'list':
 			return LoteSerializer
 		if self.action == 'retrieve':
-			return LotelSerializer
+			return LoteSerializer
 		return BasicLoteSerializer 
 
 class CorralViewSet(viewsets.ModelViewSet):
