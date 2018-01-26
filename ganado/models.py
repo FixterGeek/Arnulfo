@@ -31,7 +31,7 @@ class Corral(models.Model):
 class Lote(models.Model):
     name = models.CharField(max_length=130)
     status = models.BooleanField(default=True)
-    corral = models.ForeignKey(Corral, related_name='lotes', on_delete=models.CASCADE, blank=True, null=True)
+    corral = models.OneToOneField(Corral, related_name='lotes', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -68,13 +68,13 @@ class Animal(models.Model):
     color = models.CharField(max_length=150)
     comentarios = models.TextField()
     owner = models.CharField(max_length=150)
-    lote = models.ForeignKey(Lote, related_name='animals', on_delete=models.CASCADE, blank=True, null=True)
+    lote = models.ForeignKey(Lote, related_name='animals', on_delete=models.SET_NULL, blank=True, null=True)
     tipo_animal = models.CharField(max_length=100, choices=TIPOA, blank=True, null=True)
     
     status = models.BooleanField(default=True)
     costo_inicial = models.DecimalField(max_digits=10, decimal_places=2)
-    fierro_original = models.ImageField(upload_to='fierrosO/')
-    fierro_nuevo = models.ImageField(upload_to='fierrosN/')
+    fierro_original = models.ImageField(upload_to='fierrosO/', blank=True, null=True)
+    fierro_nuevo = models.ImageField(upload_to='fierrosN/', blank=True, null=True)
     ref_factura_original = models.CharField(max_length=100)
 
     # numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
@@ -91,7 +91,7 @@ class GastoAnimal(models.Model):
     ('Alimento','Alimento'),
     ('Vacuna', 'Vacuna'))
 
-    animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.CASCADE, null=True, blank=True)
+    animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.PROTECT, null=True, blank=True)
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.PositiveIntegerField(default=0)
     tipo = models.CharField(max_length=100, choices=TIPO, blank=True, null=True)
@@ -102,7 +102,7 @@ class GastoAnimal(models.Model):
         return "Gasto no. {}, {} ".format(self.id, self.tipo)
 
 class Peso(models.Model):
-  created = models.DateTimeField(auto_now_add=True)
+  created = models.DateField(auto_now_add=True)
   peso = models.DecimalField(max_digits=10, decimal_places=2)
   animal = models.ForeignKey(Animal, related_name='pesadas', on_delete=models.PROTECT)
 
