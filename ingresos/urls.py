@@ -1,13 +1,14 @@
 from django.conf.urls import url
 from django.urls import path, include
 from rest_framework import routers
-from .views import ClientViewSet
+from .views import ClientViewSet, SaleViewSet
 
 
 
 router = routers.DefaultRouter()
 
 router.register('clientes', ClientViewSet)
+router.register('ingresos', SaleViewSet)
 
 app_name='ingresos'
 
