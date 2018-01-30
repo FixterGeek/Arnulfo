@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.response import Response
 from .serializers import AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer
 from .models import Animal, Lote, GastoAnimal, Corral, Peso
 from .pagination import AnimalPagination
@@ -33,7 +34,16 @@ class AnimalViewSet(viewsets.ModelViewSet):
 			queryset_list = queryset_list.filter(lote=lote_query)
 		return queryset_list
 
-
+	def update(self, request, *args, **kwargs):
+		#partial = kwargs.pop('partial', False)
+		instance = self.get_object()
+		serializer = self.get_serializer(instance, data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_update(serializer)
+		seri2 = AnimalSerializer(instance, data=request.data)
+		seri2.is_valid()
+		print(seri2.data)
+		return Response(seri2.data)
 
 class LoteViewSet(viewsets.ModelViewSet):
 	queryset = Lote.objects.all()
