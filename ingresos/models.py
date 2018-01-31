@@ -15,11 +15,11 @@ class Client(models.Model):
 
 
 class Sale (models.Model):
-    PAYMENTS = (('TC', 'Tarjeta Credito'),
+    PAYMENTS = (('Tarjeta Credito', 'Tarjeta Credito'),
                 ('Efectivo', 'Efectivo'),
-                ('TD', 'Tarjeta Debito'))
+                ('Tarjeta Debito', 'Tarjeta Debito'))
     created = models.DateTimeField(auto_now_add=True)
-    client = models.ForeignKey(Client, related_name="cli", on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, related_name="sales", on_delete=models.CASCADE, blank=True, null=True)
     units = models.PositiveIntegerField(default=1)
     kg_total = models.DecimalField(max_digits=10, decimal_places=2)
     paid = models.BooleanField(default=False)
