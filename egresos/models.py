@@ -14,11 +14,11 @@ class Provider(models.Model):
 
 
 class Purchase (models.Model):
-    PAYMENTS = (('TC', 'Tarjeta Credito'),
+    PAYMENTS = (('Tarjeta Credito', 'Tarjeta Credito'),
                 ('Efectivo', 'Efectivo'),
-                ('TD', 'Tarjeta Debito'))
+                ('Tarjeta Debito', 'Tarjeta Debito'))
     created = models.DateTimeField(auto_now_add=True)
-    provider = models.ForeignKey(Provider, related_name="provid", on_delete=models.CASCADE)
+    provider = models.ForeignKey(Provider, related_name="purchases", on_delete=models.CASCADE)
     units = models.PositiveIntegerField(default=1)
     kg_total = models.DecimalField(max_digits=10, decimal_places=2)
     paid = models.BooleanField(default=False)
