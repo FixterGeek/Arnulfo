@@ -15,16 +15,19 @@ class Client(models.Model):
 
 
 class Sale (models.Model):
-    PAYMENTS = (('Tarjeta Credito', 'Tarjeta Credito'),
-                ('Efectivo', 'Efectivo'),
-                ('Tarjeta Debito', 'Tarjeta Debito'))
+    LINES = (('Cerdos', 'Cerdos'),
+             ('Ganado', 'Ganado'),
+             ('Granos', 'Granos'),
+             ('Planta de alimentos', 'Planta de alimentos'),
+             ('Campo', 'Campo')
+             )
     created = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, related_name="sales", on_delete=models.CASCADE, blank=True, null=True)
-    units = models.PositiveIntegerField(default=1)
-    kg_total = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_check = models.BooleanField(default=False)
+    no_scheck = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
-    payment = models.CharField(max_length=100, choices=PAYMENTS, )
-    total = models.DecimalField(max_digits=10, decimal_places=2)
+    business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
+    # receivable = a que cuenta se ligará
 
     def __str__(self):
         return "Venta no. {}".format(self.id)
