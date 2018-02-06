@@ -16,7 +16,7 @@ from django.db.models import Q
 
 class InsumoViewSet(viewsets.ModelViewSet):
     queryset = Insumo.objects.all()
-    serializer_class = BasicInsumoSerializer
+    serializer_class = InsumoSerializer
 
 
 class ItemViewSet(viewsets.ModelViewSet):
