@@ -26,6 +26,7 @@ class Purchase (models.Model):
     no_check = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
     business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     #receivable = a que cuenta se ligará
 
 
