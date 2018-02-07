@@ -7,7 +7,16 @@ class ProviderSerializer(serializers.ModelSerializer):
         model = Provider
         fields = '__all__'
 
+
+class BasicPurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = '__all__'
+
+
 class PurchaseSerializer(serializers.ModelSerializer):
+    provider = ProviderSerializer(many=False, read_only=True)
+
     class Meta:
         model = Purchase
         fields = '__all__'
