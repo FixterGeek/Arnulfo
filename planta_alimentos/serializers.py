@@ -2,6 +2,8 @@
 from rest_framework import serializers
 # Importamos los modelos a utilizar
 from .models import Item, Insumo, Formula
+from egresos.serializers import ProviderSerializer
+
 
 
 # Creamos los serializers
@@ -20,6 +22,7 @@ class BasicInsumoSerializer(serializers.ModelSerializer):
 
 
 class InsumoSerializer(serializers.ModelSerializer):
+    provider = ProviderSerializer(many=False, read_only=True)
     items = BasicItemSerializer(many=True, read_only=True)
     class Meta:
         model = Insumo
