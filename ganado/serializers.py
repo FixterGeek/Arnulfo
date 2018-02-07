@@ -53,12 +53,14 @@ class AlimentoSerializer(serializers.ModelSerializer):
 
 class AnimalSerializer(serializers.ModelSerializer):
 
-	lote = BasicLoteSerializer(many=False, read_only=False)
+	lote = BasicLoteSerializer(many=False, read_only=True)
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	class Meta:
 		model = Animal
 		fields = '__all__'
+
+	
 
 	
 class BasicAnimalSerializer(serializers.ModelSerializer):
