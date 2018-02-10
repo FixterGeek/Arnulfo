@@ -6,6 +6,9 @@ class Insumo(models.Model):
     name = models.CharField(max_length=100)
     provider = models.ForeignKey(Provider, related_name='insumos', on_delete=models.CASCADE, blank=True, null=True)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    unit_price_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    freight = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    loading_maneuver = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # unit = models.CharField(max_length=140)
 
     def __str__(self):
