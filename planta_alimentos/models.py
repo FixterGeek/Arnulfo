@@ -16,6 +16,8 @@ class Insumo(models.Model):
 
 class Formula(models.Model):
     name = models.CharField(max_length=100)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_units = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
@@ -23,7 +25,7 @@ class Formula(models.Model):
 class Item(models.Model):
     insumo = models.ForeignKey(Insumo, related_name='items', on_delete=models.CASCADE, blank=True)
     formula = models.ForeignKey(Formula, related_name='items', on_delete=models.CASCADE, blank=True)
-    percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    unit = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
