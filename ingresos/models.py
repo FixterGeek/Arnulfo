@@ -28,6 +28,8 @@ class Sale (models.Model):
     paid = models.BooleanField(default=False)
     business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    contact_check = models.BooleanField(default=False)
+    contact = models.CharField(max_length=140, blank=True, null=True)
     # receivable = a que cuenta se ligará
 
     def __str__(self):
