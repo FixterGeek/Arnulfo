@@ -5,6 +5,7 @@ from egresos.models import Product
 class Client(models.Model):
     client = models.CharField(max_length=140)
     address = models.CharField(max_length=140)
+    rfc = models.CharField(max_length=20, default="")
     email = models.EmailField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
                                  message="El número de teléfono debe ingresarse en el formato: '7751234567'. Hasta 10 dígitos permitidos.")
