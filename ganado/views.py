@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer
 from .models import Animal, Lote, GastoAnimal, Corral, Peso
-from .pagination import AnimalPagination
+from .pagination import AnimalPagination, LotePagination
 from django.db.models import Q
 
 
@@ -25,6 +25,7 @@ from django.db.models import Q
 
 
 class AnimalViewSet(viewsets.ModelViewSet):
+	#queryset = Animal.objects.all().filter(status=True)
 	queryset = Animal.objects.all()
 	serializer_class = AnimalSerializer
 	pagination_class = AnimalPagination
@@ -43,10 +44,11 @@ class AnimalViewSet(viewsets.ModelViewSet):
 		if query:
 			queryset_list = queryset_list.filter(
 				Q(arete_rancho__icontains=query)|
-				Q(arete_siniga__icontains=query)
+				Q(arete_siniga__icontains=query)|
+				Q(owner__icontains=query)
 				).distinct()
 		if lote_query:
-			queryset_list = queryset_list.filter(lote=lote_query)
+			queryset_list = queryset_list.filter(Q(lote__name__iexact=lote_query))
 		return queryset_list
 
 	# def create(self, request, *args, **kwargs):
@@ -74,14 +76,26 @@ class AnimalViewSet(viewsets.ModelViewSet):
 
 class LoteViewSet(viewsets.ModelViewSet):
 	queryset = Lote.objects.all()
-	#serializer_class = LoteSerializer
+	serializer_class = LoteSerializer
+	pagination_class = LotePagination
 
 	def get_serializer_class(self):
 		if self.action == 'list':
 			return LoteSerializer
 		if self.action == 'retrieve':
 			return LoteSerializer
-		return BasicLoteSerializer 
+		return BasicLoteSerializer
+
+	def get_queryset(self, *args, **kwargs):
+		query = self.request.GET.get("q")
+		
+		queryset_list = super(LoteViewSet,self).get_queryset()
+		if query:
+			queryset_list = queryset_list.filter(
+				Q(name__icontains=query)
+				).distinct()
+	
+		return queryset_list
 
 class CorralViewSet(viewsets.ModelViewSet):
 	queryset = Corral.objects.all()

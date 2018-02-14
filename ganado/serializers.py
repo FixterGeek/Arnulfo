@@ -19,27 +19,6 @@ class BasicCorralSerializer(serializers.ModelSerializer):
 		model = Corral
 		fields = '__all__'
 
-	def create(self, validated_data):
-		print(validated_data)
-		 
-		lote = BasicLoteSerializer(data=validated_data.get('lote'))
-		lote.is_valid()
-		lote.save()
-		animal =  Animal.objects.create(**validated_data)
-		animal.lote = lote
-		animal.save()
-
-		return animal
-
-
-
-	def update(self, instance, validated_data):
-		print(validated_data)
-		print(instance.lote)
-		instance = validated_data
-		return instance
-
-
 class BasicPesoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Peso
@@ -52,26 +31,22 @@ class AlimentoSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class AnimalSerializer(serializers.ModelSerializer):
-	
+
 	lote = BasicLoteSerializer(many=False, read_only=True)
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	class Meta:
 		model = Animal
 		fields = '__all__'
-
 	
 class BasicAnimalSerializer(serializers.ModelSerializer):
 	#aliments = AlimentoSerializer(many=True, read_only=True)
 	#ote = serializers.SerializerMethodField()
-	
+	aliments = AlimentoSerializer(many=True, read_only=True)
+	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	class Meta:
 		model = Animal
 		fields = '__all__'
-
-	# def get_lote(self, obj):
-	# 	print(obj.lote)
-	# 	return str(obj.lote.name)
 
 
 class PesoSerializer(serializers.ModelSerializer):
@@ -81,6 +56,7 @@ class PesoSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class LoteSerializer(serializers.ModelSerializer):
+
 	corral = BasicCorralSerializer(many=False, read_only=True)
 	animals = BasicAnimalSerializer(many=True, read_only=True)
 	class Meta:
