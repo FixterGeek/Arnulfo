@@ -15,10 +15,10 @@ class Corral(models.Model):
     #           ('Diciembre', 'Diciembre'),
     #           )
     fecha_generacion = models.DateTimeField(auto_now_add=True, db_index=True)
-    no_corral = models.PositiveIntegerField(default=0)
+    no_corral = models.PositiveIntegerField(unique=True)
     comentarios = models.TextField()
     status = models.BooleanField(default=True)
-    numero_serial = models.CharField(max_length=100)
+    numero_serial = models.CharField(max_length=100, unique=True)
     # numero_semana = models.PositiveIntegerField(default=0)
     # ano = models.PositiveIntegerField(default=2010)
     
@@ -26,10 +26,10 @@ class Corral(models.Model):
     # cuarto = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return "Corral no. {}".format(self.id)
+        return "Corral no. {}".format(self.no_corral)
 
 class Lote(models.Model):
-    name = models.CharField(max_length=130)
+    name = models.CharField(max_length=130, unique=True)
     status = models.BooleanField(default=True)
     corral = models.OneToOneField(Corral, related_name='lotes', on_delete=models.SET_NULL, blank=True, null=True)
 
@@ -58,7 +58,7 @@ class Animal(models.Model):
             ('vaquilla', 'vaquilla')
             )
     arete_siniga = models.CharField(max_length=30, blank=True, null=True)
-    arete_rancho = models.CharField(max_length=30, blank=True, null=True)
+    arete_rancho = models.CharField(max_length=30, blank=True, null=True, unique=True)
     fecha_entrada = models.DateTimeField(auto_now_add=False, db_index=True, blank=True, null=True)
     fecha_registro = models.DateTimeField(auto_now_add=True, db_index=True, blank=True, null=True)
     peso_entrada = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -76,6 +76,7 @@ class Animal(models.Model):
     fierro_original = models.ImageField(upload_to='fierrosO/', blank=True, null=True)
     fierro_nuevo = models.ImageField(upload_to='fierrosN/', blank=True, null=True)
     ref_factura_original = models.CharField(max_length=100, blank=True, null=True)
+    merma = models.CharField(max_length=100, blank=True, null=True)
 
     # numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
     # ano = models.PositiveIntegerField(default=2010, blank=True, null=True)
