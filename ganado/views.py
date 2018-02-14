@@ -25,6 +25,7 @@ from django.db.models import Q
 
 
 class AnimalViewSet(viewsets.ModelViewSet):
+	#queryset = Animal.objects.all().filter(status=True)
 	queryset = Animal.objects.all()
 	serializer_class = AnimalSerializer
 	pagination_class = AnimalPagination
@@ -47,7 +48,7 @@ class AnimalViewSet(viewsets.ModelViewSet):
 				Q(owner__icontains=query)
 				).distinct()
 		if lote_query:
-			queryset_list = queryset_list.filter(lote=lote_query)
+			queryset_list = queryset_list.filter(Q(lote__name__iexact=lote_query))
 		return queryset_list
 
 	# def create(self, request, *args, **kwargs):
