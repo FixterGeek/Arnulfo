@@ -4,10 +4,13 @@ from django.core.validators import RegexValidator
 class Provider(models.Model):
     provider = models.CharField(max_length=140)
     address = models.CharField(max_length=140)
+    rfc = models.CharField(max_length=20, default="")
     email = models.EmailField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
                                  message="El número de teléfono debe ingresarse en el formato: '7751234567'. Hasta 10 dígitos permitidos.")
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
+    contact_check = models.BooleanField(default=False)
+    contact = models.CharField(max_length=140, blank=True, null=True)
 
     def __str__(self):
         return self.provider
@@ -27,6 +30,7 @@ class Purchase (models.Model):
     paid = models.BooleanField(default=False)
     business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
     #receivable = a que cuenta se ligará
 
 
