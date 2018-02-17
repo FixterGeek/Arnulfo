@@ -25,6 +25,9 @@ class Purchase (models.Model):
                 ('Planta de alimentos','Planta de alimentos'),
                 ('Campo', 'Campo')
              )
+    TYPE = (('Gasto', 'Gasto'),
+             ('Costo', 'Costo'),
+             )
     created = models.DateTimeField(auto_now_add=True)
     provider = models.ForeignKey(Provider, related_name="purchases", on_delete=models.CASCADE)
     purchase_check = models.BooleanField(default=False)
@@ -32,6 +35,7 @@ class Purchase (models.Model):
     paid = models.BooleanField(default=False)
     business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    type = models.CharField(max_length=100, choices=TYPE, blank=True, null=True)
 
     #receivable = a que cuenta se ligará
 
