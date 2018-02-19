@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth import authenticate, login, logout
-from rest_framework import status, views
+from rest_framework import status, views, viewsets
 from rest_framework.response import Response
 from .serializers import UserSerializer
 
@@ -38,3 +38,16 @@ class UserView(views.APIView):
 	def get(self, request):
 		user = request.user
 		return Response(UserSerializer(user).data)
+
+class UsersViewSet(viewsets.ModelViewSet):
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+
+	
+
+
+
+
+
+
+
