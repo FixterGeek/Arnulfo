@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	admin = models.BooleanField(default=False)
-	ganado = models.BooleanField(default=False)
+	admin = models.BooleanField(default=False, help_text='Selecciona si este usuario usará la sección administrativa')
+	ganado = models.BooleanField(default=False, help_text='Selecciona si este usuario usará la sección del Ganado')
 
 	def __str__(self):
 		return self.user.username

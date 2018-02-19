@@ -51,29 +51,6 @@ class AnimalViewSet(viewsets.ModelViewSet):
 			queryset_list = queryset_list.filter(Q(lote__name__iexact=lote_query))
 		return queryset_list
 
-	# def create(self, request, *args, **kwargs):
-	# 	serializer = self.get_serializer(data=request.data)
-	# 	serializer.is_valid(raise_exception=True)
-	# 	self.perform_create(serializer)
-	# 	headers = self.get_success_headers(serializer.data)
-	# 	instance = Animal.objects.get(id=serializer.data['id'])
-	# 	serializer2 = AnimalSerializer(instance, data=request.data)
-	# 	serializer2.is_valid()
-	# 	return Response(serializer2.data)
-
-	# def update(self, request, *args, **kwargs):
-	# 	#partial = kwargs.pop('partial', False)
-	# 	instance = self.get_object()
-	# 	data = request.data
-	
-	# 	serializer = self.get_serializer(instance, data=data)
-	# 	serializer.is_valid(raise_exception=True)
-	# 	self.perform_update(serializer)
-	# 	seri2 = AnimalSerializer(instance, data=request.data, context={'request': request})
-	# 	seri2.is_valid()
-	# 	print(seri2.data)
-	# 	return Response(seri2.data)
-
 class LoteViewSet(viewsets.ModelViewSet):
 	queryset = Lote.objects.all()
 	serializer_class = LoteSerializer
