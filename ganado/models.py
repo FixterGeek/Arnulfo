@@ -1,19 +1,7 @@
 from django.db import models
 
 class Corral(models.Model):
-    # MONTHS = (('Enero', 'Enero'),
-    #           ('Febrero', 'Febrero'),
-    #           ('Marzo', 'Marzo'),
-    #           ('Abril', 'Abril'),
-    #           ('Mayo', 'Mayo'),
-    #           ('Junio', 'Junio'),
-    #           ('Julio', 'Julio'),
-    #           ('Agosto', 'Agosto'),
-    #           ('Septiembre', 'Septiembre'),
-    #           ('Octubre', 'Octubre'),
-    #           ('Noviembre', 'Noviembre'),
-    #           ('Diciembre', 'Diciembre'),
-    #           )
+    
     fecha_generacion = models.DateTimeField(auto_now_add=True, db_index=True)
     no_corral = models.PositiveIntegerField(unique=True)
     comentarios = models.TextField()
@@ -39,19 +27,7 @@ class Lote(models.Model):
 
 
 class Animal(models.Model):
-    # MONTHS = (('Enero','Enero'),
-    #           ('Febrero', 'Febrero'),
-    #           ('Marzo', 'Marzo'),
-    #           ('Abril', 'Abril'),
-    #           ('Mayo', 'Mayo'),
-    #           ('Junio', 'Junio'),
-    #           ('Julio', 'Julio'),
-    #           ('Agosto', 'Agosto'),
-    #           ('Septiembre', 'Septiembre'),
-    #           ('Octubre', 'Octubre'),
-    #           ('Noviembre', 'Noviembre'),
-    #           ('Diciembre', 'Diciembre'),
-    #           )
+   
     TIPOA = (('becerro', 'becerro'),
             ('toro', 'toro'),
             ('vaca', 'vaca'),
