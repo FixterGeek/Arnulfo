@@ -25,6 +25,7 @@ from accounts import urls as authUrls
 from egresos import urls as egresosUrls
 from ingresos import urls as ingresosUrls
 from planta_alimentos import urls as plantaUrls
+from vacunas import urls as vacunasUrls
 
 urlpatterns = [
 
@@ -34,6 +35,7 @@ urlpatterns = [
     path('api/egresos/', include(egresosUrls, namespace='egresos-urls')),
     path('api/ingresos/', include(ingresosUrls, namespace='ingresos-urls')),
     path('api/planta_alimentos/', include(plantaUrls, namespace='planta_alimentos-urls')),
+    path('api/vacunas/', include(vacunasUrls, namespace='vacunas-urls')),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(
         regex=r'^media/(?P<path>.*)$',
