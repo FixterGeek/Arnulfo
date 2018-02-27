@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'inventario',
     'ganado',
     'planta_alimentos',
+    'vacunas',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
