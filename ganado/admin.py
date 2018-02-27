@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Animal, Lote, Corral, GastoAnimal, Peso
+from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza
 
 from django.http import HttpResponse
 
@@ -43,5 +43,6 @@ admin.site.register(Animal, AnimalAdmin)
 admin.site.register(Corral)
 admin.site.register(GastoAnimal)
 admin.site.register(Peso)
+admin.site.register(Raza)
 # Register your models here.
 

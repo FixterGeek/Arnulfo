@@ -1,7 +1,11 @@
 from rest_framework import serializers
-from .models import Animal, Lote, Corral, GastoAnimal, Peso
+from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza
 
 
+class RazaSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Raza
+		fields = '__all__'
 
 class BasicLoteSerializer(serializers.ModelSerializer):
 	class Meta:

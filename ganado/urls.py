@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.urls import path, include
 from rest_framework import routers
-from .views import AnimalViewSet, LoteViewSet, CorralViewSet, AlimentoViewSet, PesoViewSet #AnimalAPI
+from .views import AnimalViewSet, LoteViewSet, CorralViewSet, AlimentoViewSet, PesoViewSet, RazasViewSet #AnimalAPI
 
 
 
@@ -12,6 +12,7 @@ router.register('lotes', LoteViewSet)
 router.register('corrales', CorralViewSet)
 router.register('alimentos', AlimentoViewSet)
 router.register('pesadas', PesoViewSet)
+router.register('razas', RazasViewSet)
 
 app_name='ganado'
 

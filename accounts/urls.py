@@ -2,13 +2,14 @@ from django.conf.urls import url, include
 from .views import LoginView, LogoutView, UserView
 from rest_framework.authtoken import views
 from rest_framework import routers
-from .views import UsersViewSet
+from .views import UsersViewSet, ProfileViewSet
 
 
 app_name="accounts"
 
 router = routers.DefaultRouter()
 router.register('users', UsersViewSet)
+router.register('profiles', ProfileViewSet)
 
 urlpatterns=[
 	url('^', include(router.urls)),

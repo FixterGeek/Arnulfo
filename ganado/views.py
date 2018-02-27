@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer
-from .models import Animal, Lote, GastoAnimal, Corral, Peso
+from .serializers import AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer
+from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza
 from .pagination import AnimalPagination, LotePagination
 from django.db.models import Q
 
@@ -92,3 +92,15 @@ class PesoViewSet(viewsets.ModelViewSet):
 		if self.action == 'retrieve':
 			return PesoSerializer
 		return BasicPesoSerializer 
+
+
+
+
+
+class RazasViewSet(viewsets.ModelViewSet):
+	queryset = Raza.objects.all()
+	serializer_class = RazaSerializer
+
+
+
+

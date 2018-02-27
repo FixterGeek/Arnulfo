@@ -5,10 +5,11 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status, views, viewsets
 from rest_framework.response import Response
-from .serializers import UserSerializer
+from .serializers import UserSerializer, BasicProfileSerializer
 
 
 from django.contrib.auth.models import User
+from .models import Profile
 
 # Create your views here.
 
@@ -42,6 +43,10 @@ class UserView(views.APIView):
 class UsersViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
+
+class ProfileViewSet(viewsets.ModelViewSet):
+	queryset = Profile.objects.all()
+	serializer_class = BasicProfileSerializer
 
 	
 

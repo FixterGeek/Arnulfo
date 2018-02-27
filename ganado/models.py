@@ -1,5 +1,13 @@
 from django.db import models
 
+
+class Raza(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+
+
+    def __str__(self):
+        return self.name
+
 class Corral(models.Model):
     
     fecha_generacion = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -40,7 +48,7 @@ class Animal(models.Model):
     peso_entrada = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
     costo_kilo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    raza = models.CharField(max_length=150, blank=True, null=True)
+    raza = models.ForeignKey(Raza, related_name='animals', on_delete=models.SET_NULL, blank=True, null=True)
     color = models.CharField(max_length=150, blank=True, null=True)
     #comentarios = models.TextField()
     owner = models.CharField(max_length=150, blank=True, null=True)

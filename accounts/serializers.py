@@ -28,15 +28,19 @@ class UserSerializer(serializers.ModelSerializer):
 		model = User
 		fields = ['username', 'id', 'email', 'is_staff','is_superuser', 'profile', 'password']
 	def create(self, validated_data):
+		
 		#profile_data = validated_data.pop('profile')
+		print(validated_data)
 		password = validated_data['password']
 		email = validated_data['email']
 		username = validated_data['username']
 		user = User(email=email, username=username)
 		user.set_password(password)
 		user.save()
+		print(user.id)
 		#user = User.objects.create(**validated_data)
-		#Profile.objects.create(user=user, **profile_data)
+		#profile = Profile(user=user)
+		#profile.save()
 		return user
 
 	def update(self, instance, validated_data):
