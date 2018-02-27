@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Raza(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True, unique=True)
 
 
     def __str__(self):
@@ -14,7 +14,7 @@ class Corral(models.Model):
     no_corral = models.PositiveIntegerField(unique=True)
     comentarios = models.TextField()
     status = models.BooleanField(default=True)
-    numero_serial = models.CharField(max_length=100, unique=True)
+    numero_serial = models.CharField(max_length=100, null=True, blank=True)
     # numero_semana = models.PositiveIntegerField(default=0)
     # ano = models.PositiveIntegerField(default=2010)
     
