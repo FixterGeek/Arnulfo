@@ -1,4 +1,5 @@
 from django.db import models
+from ingresos.models import Company
 
 
 class Raza(models.Model):
@@ -61,6 +62,7 @@ class Animal(models.Model):
     fierro_nuevo = models.ImageField(upload_to='fierrosN/', blank=True, null=True)
     ref_factura_original = models.CharField(max_length=100, blank=True, null=True)
     merma = models.CharField(max_length=100, blank=True, null=True)
+    empresa = models.ForeignKey(Company, related_name='animals', blank=True, null=True, on_delete=models.SET_NULL)
 
     # numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
     # ano = models.PositiveIntegerField(default=2010, blank=True, null=True)

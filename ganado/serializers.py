@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza
+from ingresos.serializers import CompanySerializer
 
 
 class RazaSerializer(serializers.ModelSerializer):
@@ -35,6 +36,7 @@ class AlimentoSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class AnimalSerializer(serializers.ModelSerializer):
+	empresa = CompanySerializer(many=False, read_only=True)
 	raza = RazaSerializer(many=False, read_only=True)
 	lote = BasicLoteSerializer(many=False, read_only=True)
 	aliments = AlimentoSerializer(many=True, read_only=True)
