@@ -1,24 +1,21 @@
 from django.db import models
+from ingresos.models import Company
+
+
+class Raza(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True, unique=True)
+
+
+    def __str__(self):
+        return self.name
 
 class Corral(models.Model):
-    # MONTHS = (('Enero', 'Enero'),
-    #           ('Febrero', 'Febrero'),
-    #           ('Marzo', 'Marzo'),
-    #           ('Abril', 'Abril'),
-    #           ('Mayo', 'Mayo'),
-    #           ('Junio', 'Junio'),
-    #           ('Julio', 'Julio'),
-    #           ('Agosto', 'Agosto'),
-    #           ('Septiembre', 'Septiembre'),
-    #           ('Octubre', 'Octubre'),
-    #           ('Noviembre', 'Noviembre'),
-    #           ('Diciembre', 'Diciembre'),
-    #           )
+    
     fecha_generacion = models.DateTimeField(auto_now_add=True, db_index=True)
     no_corral = models.PositiveIntegerField(unique=True)
     comentarios = models.TextField()
     status = models.BooleanField(default=True)
-    numero_serial = models.CharField(max_length=100, unique=True)
+    numero_serial = models.CharField(max_length=100, null=True, blank=True)
     # numero_semana = models.PositiveIntegerField(default=0)
     # ano = models.PositiveIntegerField(default=2010)
     
@@ -39,19 +36,7 @@ class Lote(models.Model):
 
 
 class Animal(models.Model):
-    # MONTHS = (('Enero','Enero'),
-    #           ('Febrero', 'Febrero'),
-    #           ('Marzo', 'Marzo'),
-    #           ('Abril', 'Abril'),
-    #           ('Mayo', 'Mayo'),
-    #           ('Junio', 'Junio'),
-    #           ('Julio', 'Julio'),
-    #           ('Agosto', 'Agosto'),
-    #           ('Septiembre', 'Septiembre'),
-    #           ('Octubre', 'Octubre'),
-    #           ('Noviembre', 'Noviembre'),
-    #           ('Diciembre', 'Diciembre'),
-    #           )
+   
     TIPOA = (('becerro', 'becerro'),
             ('toro', 'toro'),
             ('vaca', 'vaca'),
@@ -64,7 +49,7 @@ class Animal(models.Model):
     peso_entrada = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
     costo_kilo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    raza = models.CharField(max_length=150, blank=True, null=True)
+    raza = models.ForeignKey(Raza, related_name='animals', on_delete=models.SET_NULL, blank=True, null=True)
     color = models.CharField(max_length=150, blank=True, null=True)
     #comentarios = models.TextField()
     owner = models.CharField(max_length=150, blank=True, null=True)
@@ -77,6 +62,7 @@ class Animal(models.Model):
     fierro_nuevo = models.ImageField(upload_to='fierrosN/', blank=True, null=True)
     ref_factura_original = models.CharField(max_length=100, blank=True, null=True)
     merma = models.CharField(max_length=100, blank=True, null=True)
+    empresa = models.ForeignKey(Company, related_name='animals', blank=True, null=True, on_delete=models.SET_NULL)
 
     # numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
     # ano = models.PositiveIntegerField(default=2010, blank=True, null=True)

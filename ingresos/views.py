@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer
-from .models import Client, Sale
+from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer
+from .models import Client, Sale, Company
 
 #VIews for the API
+
+class CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()

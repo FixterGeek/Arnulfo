@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'inventario',
     'ganado',
     'planta_alimentos',
+    'vacunas',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
