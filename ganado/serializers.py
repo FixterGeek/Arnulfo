@@ -67,6 +67,8 @@ class AnimalSerializer(serializers.ModelSerializer):
 		
 		animal = Animal.objects.create(lote=lote, raza=raza, empresa=empresa, **validated_data)
 		return animal
+
+	
 	
 class BasicAnimalSerializer(serializers.ModelSerializer):
 	#aliments = AlimentoSerializer(many=True, read_only=True)
