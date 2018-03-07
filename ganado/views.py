@@ -30,12 +30,12 @@ class AnimalViewSet(viewsets.ModelViewSet):
 	serializer_class = AnimalSerializer
 	pagination_class = AnimalPagination
 
-	# def get_serializer_class(self):
-	# 	if self.action == 'list':
-	# 		return AnimalSerializer
-	# 	if self.action == 'retrieve':
-	# 		return AnimalSerializer
-	# 	return BasicAnimalSerializer 
+	def get_serializer_class(self):
+	 	if self.action == 'update':
+	 		return BasicAnimalSerializer
+	 	if self.action == 'partial_update':
+	 		return BasicAnimalSerializer
+	 	return AnimalSerializer 
 
 	def get_queryset(self, *args, **kwargs):
 		query = self.request.GET.get("q")
