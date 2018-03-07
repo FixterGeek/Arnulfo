@@ -18,6 +18,13 @@ class Client(models.Model):
     def __str__(self):
         return self.client
 
+
+class BusinessLine(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
 class Company(models.Model):
     LINES = (('Cerdos', 'Cerdos'),
              ('Ganado', 'Ganado'),
@@ -26,7 +33,7 @@ class Company(models.Model):
              ('Campo', 'Campo')
              )
     company = models.CharField(max_length=140)
-    line_comp = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
+    line_comp = models.ManyToManyField(BusinessLine, related_name='companies')
     rfc_comp = models.CharField(max_length=20, default="", unique=True)
     email_comp = models.EmailField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
@@ -39,6 +46,8 @@ class Company(models.Model):
 
     def __str__(self):
         return self.company
+
+
 
 
 class Sale (models.Model):
