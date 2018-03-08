@@ -6,7 +6,7 @@ class Raza(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True, unique=True)
 
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 class Corral(models.Model):
@@ -22,7 +22,7 @@ class Corral(models.Model):
     # mes = models.CharField(max_length=100, choices=MONTHS, )
     # cuarto = models.PositiveIntegerField(default=0)
 
-    def __str__(self):
+    def __unicode__(self):
         return "Corral no. {}".format(self.no_corral)
 
 class Lote(models.Model):
@@ -30,7 +30,7 @@ class Lote(models.Model):
     status = models.BooleanField(default=True)
     corral = models.OneToOneField(Corral, related_name='lotes', on_delete=models.SET_NULL, blank=True, null=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -69,7 +69,7 @@ class Animal(models.Model):
     # mes = models.CharField(max_length=100, choices=MONTHS, blank=True, null=True)
     # cuarto = models.CharField(max_length=100, blank=True, null=True)
     
-    def __str__(self):
+    def __unicode__(self):
         return self.arete_rancho
 
 
@@ -85,7 +85,7 @@ class GastoAnimal(models.Model):
     
 
 
-    def __str__(self):
+    def __unicode__(self):
         return "Gasto no. {}, {} ".format(self.id, self.tipo)
 
 class Peso(models.Model):
@@ -93,7 +93,7 @@ class Peso(models.Model):
   peso = models.DecimalField(max_digits=10, decimal_places=2)
   animal = models.ForeignKey(Animal, related_name='pesadas', on_delete=models.PROTECT)
 
-  def __str__(self):
+  def __unicode__(self):
     return "Animal {} Weigths {} kg".format(self.animal.id, self.peso)
 
 
