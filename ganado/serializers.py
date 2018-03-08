@@ -50,7 +50,7 @@ class AnimalSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 	def create(self, validated_data):
-		print(validated_data)
+		#print(validated_data)
 		try:
 			lote = validated_data.pop('lote_id')	
 		except:
