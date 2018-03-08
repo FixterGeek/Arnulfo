@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer
+from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer
 from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza
 from .pagination import AnimalPagination, LotePagination
 from django.db.models import Q
@@ -32,9 +32,9 @@ class AnimalViewSet(viewsets.ModelViewSet):
 
 	def get_serializer_class(self):
 	 	if self.action == 'update':
-	 		return BasicAnimalSerializer
+	 		return EditAnimalSerializer
 	 	if self.action == 'partial_update':
-	 		return BasicAnimalSerializer
+	 		return EditAnimalSerializer
 	 	return AnimalSerializer 
 
 	def get_queryset(self, *args, **kwargs):
