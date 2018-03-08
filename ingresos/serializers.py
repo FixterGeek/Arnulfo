@@ -21,10 +21,32 @@ class CompanySerializer(serializers.ModelSerializer):
         company = Company.objects.create(**validated_data)
         for bl in blines:
             company.line_comp.add(bl)
-        
+
         return company
 
+class EditCompanySerializer(serializers.ModelSerializer):
+    line_comp = BusinessLineSerializer(many=True, read_only=True)
+    line_comp_id = serializers.PrimaryKeyRelatedField(queryset=BusinessLine.objects.all(), write_only=True, many=True, source='line_comp')
+    class Meta:
+        model = Company
+        fields = '__all__'
 
+    # def update(self, instance, validated_data):
+    #     print('instance', instance.line_comp)
+    #     print('vdata', validated_data)
+    #     blines = validated_data.pop('line_comp_id')
+    #     #blines  = filter(None, validated_data['line_comp_id'])
+    #     instance = super(CompanySerializer, self).update(instance, validated_data)
+    #     instance.line_comp = None
+    #     for bl in blines:
+    #         instance.line_comp.add(bl)
+    #     instance.save()
+        
+    #     return instance
+
+
+
+        
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client

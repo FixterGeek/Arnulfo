@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer
+from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer, EditCompanySerializer
 from .models import Client, Sale, Company, BusinessLine
 
 #VIews for the API
@@ -8,6 +8,13 @@ from .models import Client, Sale, Company, BusinessLine
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+
+    def get_serializer_class(self):
+        if self.action == 'update':
+            return EditCompanySerializer
+        if self.action == 'partial_update':
+            return EditCompanySerializer
+        return CompanySerializer
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
@@ -28,3 +35,8 @@ class SaleViewSet(viewsets.ModelViewSet):
 class BusinessLineViewSet(viewsets.ModelViewSet):
     queryset = BusinessLine.objects.all()
     serializer_class = BusinessLineSerializer
+
+
+
+
+    
