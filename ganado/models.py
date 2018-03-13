@@ -1,5 +1,7 @@
 from django.db import models
 from ingresos.models import Company
+from planta_alimentos.models import Formula
+from vacunas.models import Vacuna
 
 
 class Raza(models.Model):
@@ -32,6 +34,9 @@ class Lote(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ['-id']
 
 
 
@@ -72,6 +77,9 @@ class Animal(models.Model):
     def __unicode__(self):
         return self.arete_rancho
 
+    class Meta:
+        ordering = ['-id']
+
 
 class GastoAnimal(models.Model):
     TIPO=(
@@ -81,7 +89,10 @@ class GastoAnimal(models.Model):
     animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.PROTECT, null=True, blank=True)
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.PositiveIntegerField(default=0)
+    unity = models.CharField(max_length=100, blank=True, null=True)
     tipo = models.CharField(max_length=100, choices=TIPO, blank=True, null=True)
+    formula = models.ForeignKey(Formula, related_name='gastos_animal', on_delete=models.PROTECT, blank=True, null=True) 
+    vacuna = models.ForeignKey(Vacuna, related_name='gastos_animal',  on_delete=models.PROTECT, blank=True, null=True)
     
 
 
