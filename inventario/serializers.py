@@ -43,6 +43,7 @@ class ItemAlmacenSerializer(serializers.ModelSerializer):
 		return item
 
 class AlmacenSerializer(serializers.ModelSerializer):
+	items = ItemAlmacenSerializer(many=True, read_only=True)
 	class Meta:
 		model = Almacen
 		fields = '__all__'

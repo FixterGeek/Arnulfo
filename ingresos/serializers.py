@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from .models import Client, Sale, Company, BusinessLine
+from inventario.serializers import AlmacenSerializer
 
 
 class BusinessLineSerializer(serializers.ModelSerializer):
+    almacenes = AlmacenSerializer(many=True, read_only=True)
     class Meta:
         model = BusinessLine
         fields = '__all__'
