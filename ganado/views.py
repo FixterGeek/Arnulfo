@@ -54,7 +54,7 @@ class AnimalViewSet(viewsets.ModelViewSet):
 class LoteViewSet(viewsets.ModelViewSet):
 	queryset = Lote.objects.all()
 	serializer_class = LoteSerializer
-	pagination_class = LotePagination
+	#pagination_class = LotePagination
 
 	def get_serializer_class(self):
 		if self.action == 'list':
