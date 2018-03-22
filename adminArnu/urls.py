@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.views.generic import TemplateView
 from django.urls import path, include
 from django.conf.urls import url
 from django.conf import settings
@@ -11,8 +12,11 @@ from planta_alimentos import urls as plantaUrls
 from vacunas import urls as vacunasUrls
 from inventario import urls as inventarioUrls
 
-urlpatterns = [
+class Home(TemplateView):
+    template_name = 'index.html'
 
+urlpatterns = [
+    path('', Home.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('api/ganado/', include(ganadoUrls, namespace='ganado-urls')),
     path('api/auth/', include(authUrls, namespace='auth-urls')),
