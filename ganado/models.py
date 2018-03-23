@@ -14,7 +14,7 @@ class Raza(models.Model):
 class Corral(models.Model):
     
     fecha_generacion = models.DateTimeField(auto_now_add=True, db_index=True)
-    no_corral = models.PositiveIntegerField(unique=True)
+    no_corral = models.CharField(max_length=100, unique=True)
     comentarios = models.TextField()
     status = models.BooleanField(default=True)
     numero_serial = models.CharField(max_length=100, null=True, blank=True)
