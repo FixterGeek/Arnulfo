@@ -2,12 +2,14 @@ from django.db import models
 from ingresos.models import BusinessLine
 from planta_alimentos.models import Insumo
 from vacunas.models import Vacuna
+from ingresos.models import Company
 
 class Almacen(models.Model):
 	name = models.CharField(max_length=100)
 	bline = models.ForeignKey(BusinessLine, related_name='almacenes',blank=True, null=True, on_delete=models.SET_NULL)
+	company = models.ForeignKey(Company, related_name='almacenes', blank=True, null=True, on_delete=models.SET_NULL)
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.name
 
 class ItemAlmacen(models.Model):
@@ -21,5 +23,5 @@ class ItemAlmacen(models.Model):
 	insumo = models.ForeignKey(Insumo, related_name='items_almacen', blank=True, null=True, on_delete=models.SET_NULL)
 	vacuna = models.ForeignKey(Vacuna, related_name='items_almacen', blank=True, null=True, on_delete=models.SET_NULL)
 
-	def __unicode__(self):
+	def __str__(self):
 		return 'item {} de almacen {}'.format(self.id, self.almacen.id)
