@@ -48,7 +48,7 @@ class Animal(models.Model):
             ('vaquilla', 'vaquilla')
             )
     arete_siniga = models.CharField(max_length=30, blank=True, null=True)
-    arete_rancho = models.CharField(max_length=30, blank=True, null=True, unique=True)
+    arete_rancho = models.CharField(max_length=30, blank=True, null=True)
     fecha_entrada = models.DateTimeField(auto_now_add=False, db_index=True, blank=True, null=True)
     fecha_registro = models.DateTimeField(auto_now_add=True, db_index=True, blank=True, null=True)
     peso_entrada = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
