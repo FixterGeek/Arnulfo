@@ -8,6 +8,7 @@ class AnimalAdmin(ImportExportModelAdmin):
     resource_class = AnimalResource
     list_display = ['arete_rancho','arete_siniga','owner','lote']
     list_filter = ['lote__name','status']
+    search_fields = ['arete_rancho', 'arete_siniga']
 
 
 class LoteAdmin(ImportExportModelAdmin):

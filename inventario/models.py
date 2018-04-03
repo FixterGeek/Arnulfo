@@ -14,7 +14,7 @@ class Almacen(models.Model):
 
 class ItemAlmacen(models.Model):
 	
-	almacen = models.ForeignKey(Almacen, related_name='items', blank=True, null=True, on_delete=models.SET_NULL)
+	almacen = models.ForeignKey(Almacen, related_name='items', blank=True, null=True, on_delete=models.PROTECT)
 	costo_u = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 	total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 	cantidad = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -22,6 +22,7 @@ class ItemAlmacen(models.Model):
 	product_type = models.CharField(max_length=100, blank=True, null=True)
 	insumo = models.ForeignKey(Insumo, related_name='items_almacen', blank=True, null=True, on_delete=models.SET_NULL)
 	vacuna = models.ForeignKey(Vacuna, related_name='items_almacen', blank=True, null=True, on_delete=models.SET_NULL)
+	date_added = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 	def __str__(self):
 		return 'item {} de almacen {}'.format(self.id, self.almacen.id)
