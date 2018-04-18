@@ -38,7 +38,11 @@ class AlimentoSerializer(serializers.ModelSerializer):
 
 class AnimalSerializer(serializers.ModelSerializer):
 	empresa = CompanySerializer(many=False, read_only=True)
-	empresa_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), write_only=True, allow_null=True, required=False)
+	empresa_id = serializers.PrimaryKeyRelatedField(
+		queryset=Company.objects.all(), 
+		write_only=True, 
+		allow_null=True, 
+		required=False)
 	raza = RazaSerializer(many=False, read_only=True)
 	raza_id = serializers.PrimaryKeyRelatedField(queryset=Raza.objects.all(), write_only=True, allow_null=True, required=False)
 	lote = BasicLoteSerializer(many=False, read_only=True)
