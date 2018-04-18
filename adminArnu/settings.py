@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
