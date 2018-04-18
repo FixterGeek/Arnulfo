@@ -88,7 +88,7 @@ class GastoAnimal(models.Model):
     created = models.DateField(auto_now_add=True, blank=True, null=True)
     animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.PROTECT, null=True, blank=True)
     costo = models.DecimalField(max_digits=10, decimal_places=2)
-    cantidad = models.PositiveIntegerField(default=0)
+    cantidad = models.DecimalField(max_digits=10, decimal_places=2)
     unity = models.CharField(max_length=100, blank=True, null=True)
     tipo = models.CharField(max_length=100, choices=TIPO, blank=True, null=True)
     formula = models.ForeignKey(Formula, related_name='gastos_animal', on_delete=models.PROTECT, blank=True, null=True) 
