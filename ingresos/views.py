@@ -3,6 +3,9 @@ from rest_framework import viewsets
 from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer, EditCompanySerializer
 from .models import Client, Sale, Company, BusinessLine
 
+#PAGINATION
+from .pagination import ClientePagination
+
 #VIews for the API
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -19,6 +22,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    #pagination_class = ClientePagination
 
 class SaleViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()

@@ -18,6 +18,9 @@ class Client(models.Model):
     def __str__(self):
         return self.client
 
+    class Meta:
+        ordering = ["id"]
+
 
 class BusinessLine(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
