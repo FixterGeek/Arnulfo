@@ -1,0 +1,85 @@
+********** Basic usage of the react-router-dom by Oswaldinho **********
+
+
+1.- install react-router-dom
+$ npm install --save react-router-dom
+
+2.- Import the react-router-dom in the index.js file and wrap the App component with the browser router
+---index.js---
+import { BrowserRouter } from 'react-router-dom'; 
+
+const WithRouter = () => (
+	<App/>
+);	
+
+ReactDOM.render(<WithRouter/>, document.getElementById('root'));
+registerServiceWorker();
+
+3.- Create the routes file, here we are going to declare all the routes our app will have.
+---Routes.js---
+import React from 'react';
+import {Switch, Route} from 'react-router-dom';
+import Component from './components/componentfolder/Component'
+import ComponentList from './components/componentfolder2/ComponentList'
+
+export const Routes = () => (
+    <Switch>
+        <Route path='/' component={Component}/>
+        <Route path='/list' component={ComponentList} />
+    </Switch>
+);
+
+4.- The last thing we need to do is to import and use the Routes component we did.
+---App.js---
+import React, { Component } from 'react';
+import './App.css';
+import {Routes} from './Routes'
+import Navbar from "./components/navbar/Navbar";
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+      	<Navbar/>
+        <Routes/>
+      </div>
+    );
+  }
+}
+
+export default App;
+
+5.- Now we're able to go from one route to another rendering different components 😎
+
+6.- To show dinamic content we need to add routes with variables to the route:
+---Routes.js---
+...
+import ComponentDetail from './components/componentfolder2/ComponentDetail'
+export const Routes = () => (
+    <Switch>
+        <Route path='/' component={Component}/>
+        <Route path='/list' component={ComponentList} />
+        <Route path='/detail/:id' component={ComponentDetail} />
+    </Switch>
+);
+
+7.- Finally in the ComponentDetail we could render dinamically on the component the id that is on the path
+---ComponentDetail.js---
+import React, { Component } from 'react';
+
+class ComponentDetail extends Component {
+  render() {
+    return (
+      <div>
+      	<h1>Detail of item with id: {{this.props.match.params.id}}</h1>
+      </div>
+    );
+  }
+}
+
+export default ComponentDetail;
+
+:)
+
+
+
