@@ -3,11 +3,28 @@ from rest_framework import viewsets
 from .serializers import ProviderSerializer, PurchaseSerializer, BasicPurchaseSerializer
 from .models import Provider, Purchase
 
+#PAGINATION
+from django.db.models import Q
+from .pagination import ProveedorPagination
+
 #VIews for the API
 
 class ProviderViewSet(viewsets.ModelViewSet):
     queryset = Provider.objects.all()
     serializer_class = ProviderSerializer
+    pagination_class = ProveedorPagination
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset_list = super(ProviderViewSet, self).get_queryset()
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(provider__icontains=query)
+            ).distinct()
+
+        return queryset_list
+
+
 
 class PurchaseViewSet(viewsets.ModelViewSet):
     queryset = Purchase.objects.all()

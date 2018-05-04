@@ -17,6 +17,9 @@ class Provider(models.Model):
     def __str__(self):
         return self.provider
 
+    class Meta:
+        ordering = ["-id"]
+
 
 class Purchase (models.Model):
     LINES = (('Cerdos', 'Cerdos'),
