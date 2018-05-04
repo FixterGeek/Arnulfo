@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer, EditCompanySerializer
 from .models import Client, Sale, Company, BusinessLine
+from django.db.models import Q
 
 #PAGINATION
 from .pagination import ClientePagination
@@ -22,7 +23,19 @@ class CompanyViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    #pagination_class = ClientePagination
+    pagination_class = ClientePagination
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset_list = super(ClientViewSet, self).get_queryset()
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(client__icontains=query)
+            ).distinct()
+
+        return queryset_list
+
+
 
 class SaleViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()

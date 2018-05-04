@@ -19,7 +19,7 @@ class Client(models.Model):
         return self.client
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["-id"]
 
 
 class BusinessLine(models.Model):
