@@ -28,6 +28,9 @@ class BusinessLine(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ["-id"]
+
 class Company(models.Model):
     LINES = (('Cerdos', 'Cerdos'),
              ('Ganado', 'Ganado'),

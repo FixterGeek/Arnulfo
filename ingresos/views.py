@@ -5,7 +5,7 @@ from .models import Client, Sale, Company, BusinessLine
 from django.db.models import Q
 
 #PAGINATION
-from .pagination import ClientePagination
+from .pagination import ClientePagination, BlinePagination
 
 #VIews for the API
 
@@ -52,6 +52,17 @@ class SaleViewSet(viewsets.ModelViewSet):
 class BusinessLineViewSet(viewsets.ModelViewSet):
     queryset = BusinessLine.objects.all()
     serializer_class = BusinessLineSerializer
+    pagination_class = BlinePagination
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset_list = super(BusinessLineViewSet, self).get_queryset()
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(name__icontains=query)
+            ).distinct()
+
+        return queryset_list
 
 
 
