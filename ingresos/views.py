@@ -5,13 +5,14 @@ from .models import Client, Sale, Company, BusinessLine
 from django.db.models import Q
 
 #PAGINATION
-from .pagination import ClientePagination, BlinePagination
+from .pagination import ClientePagination, BlinePagination, CompanyPagination
 
 #VIews for the API
 
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+    pagination_class = CompanyPagination
 
     def get_serializer_class(self):
         if self.action == 'update':
@@ -19,6 +20,16 @@ class CompanyViewSet(viewsets.ModelViewSet):
         if self.action == 'partial_update':
             return EditCompanySerializer
         return CompanySerializer
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset_list = super(CompanyViewSet, self).get_queryset()
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(company__icontains=query)
+            ).distinct()
+
+        return queryset_list
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
