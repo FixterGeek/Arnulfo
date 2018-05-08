@@ -42,6 +42,8 @@ class Purchase (models.Model):
 
     #receivable = a que cuenta se ligará
 
+    class Meta:
+        ordering = ["-id"]
 
     def __str__(self):
         return "Compra no. {}".format(self.id)

@@ -75,6 +75,9 @@ class Sale (models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # receivable = a que cuenta se ligará
 
+    class Meta:
+        ordering = ["-id"]
+
     def __str__(self):
         return "Venta no. {}".format(self.id)
 

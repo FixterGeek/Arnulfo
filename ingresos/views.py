@@ -5,7 +5,7 @@ from .models import Client, Sale, Company, BusinessLine
 from django.db.models import Q
 
 #PAGINATION
-from .pagination import ClientePagination, BlinePagination, CompanyPagination
+from .pagination import ClientePagination, BlinePagination, CompanyPagination, IngresoPagination
 
 #VIews for the API
 
@@ -51,6 +51,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 class SaleViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
     #serializer_class = SaleSerializer
+    pagination_class = IngresoPagination
 
     def get_serializer_class(self):
         if self.action == 'list':
