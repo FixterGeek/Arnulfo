@@ -36,7 +36,7 @@ class Purchase (models.Model):
     purchase_check = models.BooleanField(default=False)
     no_check = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
-    business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
+    business_line = models.CharField(max_length=100, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     type = models.CharField(max_length=100, choices=TYPE, blank=True, null=True)
 

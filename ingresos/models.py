@@ -71,7 +71,7 @@ class Sale (models.Model):
     sale_check = models.BooleanField(default=False)
     no_scheck = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
-    business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
+    business_line = models.CharField(max_length=100, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # receivable = a que cuenta se ligará
 
@@ -85,10 +85,10 @@ class Sale (models.Model):
 
 class SaleItem(models.Model):
     sale = models.ForeignKey(Sale, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.CASCADE, default="")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    weigth = models.DecimalField(max_digits=10, decimal_places=2)
-    animal_ref = models.CharField(max_length=100)
+    weigth = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    animal_ref = models.CharField(max_length=100, default="")
 
     def __str__(self):
         return '{}'.format(self.id)
