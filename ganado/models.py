@@ -4,6 +4,15 @@ from planta_alimentos.models import Formula
 from vacunas.models import Vacuna
 
 
+class Factura(models.Model):
+    factura = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.factura
+
+    class Meta:
+        ordering = ["-id"]
+
 class Raza(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True, unique=True)
 
@@ -65,7 +74,7 @@ class Animal(models.Model):
     costo_inicial = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     fierro_original = models.ImageField(upload_to='fierrosO/', blank=True, null=True)
     fierro_nuevo = models.ImageField(upload_to='fierrosN/', blank=True, null=True)
-    ref_factura_original = models.CharField(max_length=100, blank=True, null=True)
+    ref_factura_original = models.ForeignKey(Factura, related_name='animals', blank=True, null=True, on_delete=models.SET_NULL)
     merma = models.CharField(max_length=100, blank=True, null=True)
     empresa = models.ForeignKey(Company, related_name='animals', blank=True, null=True, on_delete=models.SET_NULL)
 

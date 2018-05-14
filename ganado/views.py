@@ -2,10 +2,24 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer
-from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza
-from .pagination import AnimalPagination, LotePagination
+from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer
+from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura
+from .pagination import AnimalPagination, LotePagination, FacturaPagination
 from django.db.models import Q
+
+class FacturaViewSet(viewsets.ModelViewSet):
+	queryset = Factura.objects.all()
+	serializer_class = FacturaSerializer
+	pagination_class = FacturaPagination
+
+	def get_queryset(self, *args, **kwargs):
+		query = self.request.GET.get("q")
+		query_list = super(FacturaViewSet, self).get_queryset()
+		if query:
+			query_list = query_list.filter(
+				Q(factura__icontains=query)
+			).distinct()
+		return query_list
 
 
 #VIews for the API
