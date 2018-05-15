@@ -1,5 +1,5 @@
 from import_export import resources
-from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza
+from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza, Factura
 
 
 class LoteResource(resources.ModelResource):
@@ -25,3 +25,7 @@ class RazaResource(resources.ModelResource):
 class GastoAnimalResource(resources.ModelResource):
     class Meta:
         model = GastoAnimal
+
+class FacturaResource(resources.ModelResource):
+    class Meta:
+        model = Factura
