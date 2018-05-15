@@ -67,7 +67,7 @@ class Sale (models.Model):
              ('Campo', 'Campo')
              )
     created = models.DateTimeField(auto_now_add=True)
-    client = models.ForeignKey(Client, related_name="sales", on_delete=models.CASCADE, blank=True, null=True)
+    client = models.ForeignKey(Client, related_name="sales", on_delete=models.PROTECT, blank=True, null=True)
     sale_check = models.BooleanField(default=False)
     no_scheck = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
@@ -84,8 +84,8 @@ class Sale (models.Model):
 #Prueba
 
 class SaleItem(models.Model):
-    sale = models.ForeignKey(Sale, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.CASCADE, default="")
+    sale = models.ForeignKey(Sale, related_name='items', on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.PROTECT, default="")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     weigth = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     animal_ref = models.CharField(max_length=100, default="")
