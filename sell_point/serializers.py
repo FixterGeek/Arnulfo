@@ -29,6 +29,19 @@ class ProductSerializer(serializers.ModelSerializer):
 		product = Product.objects.create(category=cat, **validated_data)
 		return product
 
+	# def update(self, instance, validated_data):
+	# 	cat = validated_data.get('category_id', instance.category_id)
+	# 	instance.category = cat
+	# 	instance.save()
+	# 	return instance
+class EditProductSerializer(serializers.ModelSerializer):
+	category = CategorySerializer(many=False, read_only=True)
+	category_id = serializers.PrimaryKeyRelatedField(many=False, write_only=True, queryset=Category.objects.all(), source="category")
+	class Meta:
+		model = Product
+		fields = '__all__'
+
+
 
 
 
