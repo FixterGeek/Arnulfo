@@ -7,7 +7,7 @@ from rest_framework import serializers
 class BasicUserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
-		fields = ['username', 'id', 'email', 'is_staff','is_superuser']
+		fields = ['username', 'id', 'email', 'is_staff','is_superuser', 'first_name']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -18,23 +18,26 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class BasicProfileSerializer(serializers.ModelSerializer):
+
 	class Meta:
 		model = Profile
-		fields = '__all__'
+		fields = ['admin', 'ganado']#all sections
 
 class UserSerializer(serializers.ModelSerializer):
-	profile=BasicProfileSerializer(many=False, read_only=True);
+	profile=BasicProfileSerializer(many=False, read_only=False);
 	class Meta:
 		model = User
-		fields = ['username', 'id', 'email', 'is_staff','is_superuser', 'profile', 'password']
+		fields = ['username', 'id', 'email', 'is_staff','is_superuser', 'profile', 'password','is_active', 'first_name']
 	def create(self, validated_data):
 		
-		#profile_data = validated_data.pop('profile')
+		profile_data = validated_data.pop('profile')
 		print(validated_data)
-		password = validated_data['password']
+		password = validated_data.pop('password')
 		email = validated_data['email']
 		username = validated_data['username']
-		user = User(email=email, username=username)
+		#user = User(email=email, username=username)
+		user = User.objects.create(**validated_data)
+		profile = Profile.objects.create(user=user, **profile_data)
 		user.set_password(password)
 		user.save()
 		print(user.id)

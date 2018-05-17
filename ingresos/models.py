@@ -18,12 +18,18 @@ class Client(models.Model):
     def __str__(self):
         return self.client
 
+    class Meta:
+        ordering = ["-id"]
+
 
 class BusinessLine(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ["-id"]
 
 class Company(models.Model):
     LINES = (('Cerdos', 'Cerdos'),
@@ -47,6 +53,9 @@ class Company(models.Model):
     def __str__(self):
         return self.company
 
+    class Meta:
+        ordering = ["-id"]
+
 
 
 
@@ -58,13 +67,16 @@ class Sale (models.Model):
              ('Campo', 'Campo')
              )
     created = models.DateTimeField(auto_now_add=True)
-    client = models.ForeignKey(Client, related_name="sales", on_delete=models.CASCADE, blank=True, null=True)
+    client = models.ForeignKey(Client, related_name="sales", on_delete=models.PROTECT, blank=True, null=True)
     sale_check = models.BooleanField(default=False)
     no_scheck = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
-    business_line = models.CharField(max_length=100, choices=LINES, blank=True, null=True)
+    business_line = models.CharField(max_length=100, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # receivable = a que cuenta se ligará
+
+    class Meta:
+        ordering = ["-id"]
 
     def __str__(self):
         return "Venta no. {}".format(self.id)
@@ -72,11 +84,11 @@ class Sale (models.Model):
 #Prueba
 
 class SaleItem(models.Model):
-    sale = models.ForeignKey(Sale, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.CASCADE)
+    sale = models.ForeignKey(Sale, related_name='items', on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.PROTECT, default="")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    weigth = models.DecimalField(max_digits=10, decimal_places=2)
-    animal_ref = models.CharField(max_length=100)
+    weigth = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    animal_ref = models.CharField(max_length=100, default="")
 
     def __str__(self):
         return '{}'.format(self.id)
