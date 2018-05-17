@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/planta_alimentos/', include(plantaUrls, namespace='planta_alimentos-urls')),
     path('api/vacunas/', include(vacunasUrls, namespace='vacunas-urls')),
     path('api/inventario/', include(inventarioUrls, namespace='inventario-urls')),
-    path('api/sell_point/', include(spUrls, namespace='sp-urls')),
+    #path('api/sell_point/', include(spUrls, namespace='sp-urls')),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(
         regex=r'^media/(?P<path>.*)$',
