@@ -11,6 +11,7 @@ from ingresos import urls as ingresosUrls
 from planta_alimentos import urls as plantaUrls
 from vacunas import urls as vacunasUrls
 from inventario import urls as inventarioUrls
+from sell_point import urls as spUrls
 
 class Home(TemplateView):
     template_name = 'index.html'
@@ -25,6 +26,7 @@ urlpatterns = [
     path('api/planta_alimentos/', include(plantaUrls, namespace='planta_alimentos-urls')),
     path('api/vacunas/', include(vacunasUrls, namespace='vacunas-urls')),
     path('api/inventario/', include(inventarioUrls, namespace='inventario-urls')),
+    path('api/sell_point/', include(spUrls, namespace='sp-urls')),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(
         regex=r'^media/(?P<path>.*)$',
