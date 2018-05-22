@@ -14,7 +14,7 @@ class Almacen(models.Model):
 
 class ItemAlmacen(models.Model):
 	
-	almacen = models.ForeignKey(Almacen, related_name='items', blank=True, null=True, on_delete=models.PROTECT)
+	almacen = models.ForeignKey(Almacen, related_name='items', blank=True, null=True, on_delete=models.SET_NULL)
 	costo_u = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 	total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 	cantidad = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)

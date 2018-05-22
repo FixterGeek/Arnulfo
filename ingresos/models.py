@@ -2,6 +2,18 @@ from django.db import models
 from django.core.validators import RegexValidator
 from egresos.models import Product
 
+class CuentaBanco(models.Model):
+    cuenta = models.CharField(max_length=16, blank=True, null=True, unique=True)
+    banco=models.CharField(max_length=140, blank=True, null=True)
+    clabe=models.CharField(max_length=140, blank=True, null=True, unique=True)
+
+    def __str__(self):
+        return self.cuenta
+
+    class Meta:
+        ordering = ["-id"]
+
+
 class Client(models.Model):
     client = models.CharField(max_length=140)
     address = models.CharField(max_length=140)
@@ -73,7 +85,8 @@ class Sale (models.Model):
     paid = models.BooleanField(default=False)
     business_line = models.CharField(max_length=100, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    # receivable = a que cuenta se ligará
+    receivable = models.ForeignKey(CuentaBanco, related_name='sales', on_delete=models.PROTECT, blank=True, null=True)
+    concepto = models.CharField(max_length=140, blank=True, null=True)
 
     class Meta:
         ordering = ["-id"]
