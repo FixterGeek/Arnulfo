@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer, EditCompanySerializer
-from .models import Client, Sale, Company, BusinessLine
+from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer, EditCompanySerializer, CuentaBancoSerializer
+from .models import Client, Sale, Company, BusinessLine, CuentaBanco
 from django.db.models import Q
 
 #PAGINATION
-from .pagination import ClientePagination, BlinePagination, CompanyPagination, IngresoPagination
+from .pagination import ClientePagination, BlinePagination, CompanyPagination, IngresoPagination, CuentaPagination
 
 #VIews for the API
 
@@ -76,6 +76,21 @@ class BusinessLineViewSet(viewsets.ModelViewSet):
 
         return queryset_list
 
+class CuentaBancoViewSet(viewsets.ModelViewSet):
+    queryset = CuentaBanco.objects.all()
+    serializer_class = CuentaBancoSerializer
+    pagination_class = CuentaPagination
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset_list = super(CuentaBancoViewSet, self).get_queryset()
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(cuenta__icontains=query)|
+                Q(banco__icontains=query)
+            ).distinct()
+
+        return queryset_list
 
 
 
