@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from ingresos.models import BusinessLine
 
 class Provider(models.Model):
     provider = models.CharField(max_length=140)
@@ -32,11 +33,12 @@ class Purchase (models.Model):
              ('Costo', 'Costo'),
              )
     created = models.DateTimeField(auto_now_add=True)
-    provider = models.ForeignKey(Provider, related_name="purchases", on_delete=models.PROTECT)
+    provider_egreso = models.ForeignKey(Provider, related_name="purchases", on_delete=models.PROTECT, blank=True, null=True)
     purchase_check = models.BooleanField(default=False)
     no_check = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
-    business_line = models.CharField(max_length=100, blank=True, null=True)
+    business_egreso = models.ForeignKey(BusinessLine, related_name="purchases", on_delete=models.PROTECT, blank=True,
+                                      null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     type = models.CharField(max_length=100, choices=TYPE, blank=True, null=True)
 
@@ -61,7 +63,7 @@ class Product(models.Model):
 
 class PurchaseItem(models.Model):
     order = models.ForeignKey(Purchase, related_name='items', on_delete=models.PROTECT)
-    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.PROTECT)
+    #product = models.ForeignKey(Product, related_name='order_items', on_delete=models.PROTECT)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     weigth = models.DecimalField(max_digits=10, decimal_places=2)
     animal_ref = models.CharField(max_length=100)

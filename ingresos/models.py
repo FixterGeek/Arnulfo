@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from egresos.models import Product
+
 
 class CuentaBanco(models.Model):
     cuenta = models.CharField(max_length=16, blank=True, null=True, unique=True)
@@ -83,7 +83,7 @@ class Sale (models.Model):
     sale_check = models.BooleanField(default=False)
     no_scheck = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
-    business_line = models.CharField(max_length=100, blank=True, null=True)
+    business_line = models.ForeignKey(BusinessLine, related_name="sales", on_delete=models.PROTECT, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     receivable = models.ForeignKey(CuentaBanco, related_name='sales', on_delete=models.PROTECT, blank=True, null=True)
     concepto = models.CharField(max_length=140, blank=True, null=True)
@@ -98,7 +98,7 @@ class Sale (models.Model):
 
 class SaleItem(models.Model):
     sale = models.ForeignKey(Sale, related_name='items', on_delete=models.PROTECT)
-    product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.PROTECT, default="")
+    #product = models.ForeignKey(Product, related_name='sale_items', on_delete=models.PROTECT, default="")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     weigth = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     animal_ref = models.CharField(max_length=100, default="")
