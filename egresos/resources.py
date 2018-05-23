@@ -1,5 +1,5 @@
 from import_export import resources
-from .models import Purchase, Provider, PurchaseItem
+from .models import Purchase, Provider, PurchaseItem, Compras
 
 
 class PurchaseResource(resources.ModelResource):
@@ -13,3 +13,7 @@ class ProviderResource(resources.ModelResource):
 class PurchaseItemResource(resources.ModelResource):
     class Meta:
         model = PurchaseItem
+
+class ComprasResource(resources.ModelResource):
+    class Meta:
+        model = Compras

@@ -41,6 +41,7 @@ class Purchase (models.Model):
                                       null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     type = models.CharField(max_length=100, choices=TYPE, blank=True, null=True)
+    concepto_purchase = models.CharField(max_length=140, blank=True, null=True)
 
     #receivable = a que cuenta se ligará
 
@@ -58,6 +59,23 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Compras(models.Model):
+    no_factura = models.CharField(max_length=140)
+    descripcion = models.CharField(max_length=140)
+    fecha_creacion = models.DateField(auto_now_add=False, db_index=True, blank=True, null=True)
+    costo_final = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    linea_compras = models.ForeignKey(BusinessLine, related_name="compras", on_delete=models.PROTECT, blank=True,
+                                      null=True)
+    proveedor = models.ForeignKey(Provider, related_name="compras", on_delete=models.PROTECT, blank=True, null=True)
+
+
+    class Meta:
+        ordering = ["-id"]
+
+    def __str__(self):
+        return self.no_factura
 
 #Prueba
 
