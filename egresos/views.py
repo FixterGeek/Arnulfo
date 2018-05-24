@@ -26,7 +26,8 @@ class ComprasViewSet(viewsets.ModelViewSet):
         queryset_list = super(ComprasViewSet, self).get_queryset()
         if query:
             queryset_list = queryset_list.filter(
-                Q(proveedor__provider__icontains=query)
+                Q(proveedor__provider__icontains=query)|
+                Q(no_factura__icontains=query)
             )
 
         return queryset_list
