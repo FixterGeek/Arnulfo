@@ -79,6 +79,11 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+class GastoGanado(models.Model):
+    concepto = models.CharField(max_length = 140)
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha = models.DateField(auto_now_add=True, db_index=True, blank=True, null=True)
+
 
 #Prueba
 

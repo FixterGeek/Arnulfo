@@ -1,13 +1,29 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import ProviderSerializer, PurchaseSerializer, BasicPurchaseSerializer, EditPurchaseSerializer, ComprasSerializer, EditComprasSerializer
-from .models import Provider, Purchase, Compras
+from .serializers import ProviderSerializer, PurchaseSerializer, BasicPurchaseSerializer, EditPurchaseSerializer, ComprasSerializer, EditComprasSerializer, GastoSerializer
+from .models import Provider, Purchase, Compras, GastoGanado
 
 #PAGINATION
 from django.db.models import Q
-from .pagination import ProveedorPagination, EgresosPagination, ComprasPagination
+from .pagination import ProveedorPagination, EgresosPagination, ComprasPagination, GastoPagination
 
 #VIews for the API
+
+class GastosViewSet(viewsets.ModelViewSet):
+    queryset = GastoGanado.objects.all()
+    serializer_class = GastoSerializer
+    pagination_class = GastoPagination
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset_list = super(GastosViewSet, self).get_queryset()
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(concepto__icontains=query)
+            )
+
+        return queryset_list
+
 
 class ComprasViewSet(viewsets.ModelViewSet):
     queryset = Compras.objects.all()
