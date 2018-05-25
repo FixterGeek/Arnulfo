@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer, EditCompanySerializer, CuentaBancoSerializer
+from .serializers import ClientSerializer, SaleSerializer, BasicSaleSerializer, CompanySerializer, BusinessLineSerializer, EditCompanySerializer, CuentaBancoSerializer, EditSaleSerializer
 from .models import Client, Sale, Company, BusinessLine, CuentaBanco
 from django.db.models import Q
 
@@ -50,15 +50,25 @@ class ClientViewSet(viewsets.ModelViewSet):
 
 class SaleViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
-    #serializer_class = SaleSerializer
+    serializer_class = SaleSerializer
     pagination_class = IngresoPagination
 
     def get_serializer_class(self):
-        if self.action == 'list':
-            return SaleSerializer
-        if self.action == 'retrieve':
-            return SaleSerializer
-        return BasicSaleSerializer
+        if self.action == 'update':
+            return EditSaleSerializer
+        if self.action == 'partial_update':
+            return EditSaleSerializer
+        return SaleSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset_list = super(SaleViewSet, self).get_queryset()
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(client__client__icontains=query)
+            )
+
+        return queryset_list
 
 class BusinessLineViewSet(viewsets.ModelViewSet):
     queryset = BusinessLine.objects.all()
