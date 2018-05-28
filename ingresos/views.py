@@ -62,10 +62,15 @@ class SaleViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, *args, **kwargs):
         query = self.request.GET.get("q")
+        query_paid = self.request.GET.get("cobrado")
         queryset_list = super(SaleViewSet, self).get_queryset()
         if query:
             queryset_list = queryset_list.filter(
                 Q(client__client__icontains=query)
+            ).distinct()
+        if query_paid:
+            queryset_list = queryset_list.filter(
+                Q(paid=query_paid)
             )
 
         return queryset_list

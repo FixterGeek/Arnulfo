@@ -79,9 +79,14 @@ class PurchaseViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, *args, **kwargs):
         query = self.request.GET.get("q")
+        paid_query = self.request.GET.get("paid")
         queryset_list = super(PurchaseViewSet, self).get_queryset()
         if query:
             queryset_list = queryset_list.filter(
                 Q(provider_egreso__provider__icontains=query)
-            )
+            ).distinct()
+
+        if paid_query:
+            queryset_list = queryset_list.filter(Q(paid=paid_query))
+
         return queryset_list
