@@ -38,7 +38,7 @@ class BusinessLineSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    line_comp = BusinessLineBasicSerializer(many=True, read_only=True)
+    line_comp = BusinessLineSerializer(many=True, read_only=True)
     line_comp_id = serializers.PrimaryKeyRelatedField(queryset=BusinessLine.objects.all(), write_only=True, many=True)
     class Meta:
         model = Company
@@ -54,7 +54,7 @@ class CompanySerializer(serializers.ModelSerializer):
         return company
 
 class EditCompanySerializer(serializers.ModelSerializer):
-    line_comp = BusinessLineBasicSerializer(many=True, read_only=True)
+    line_comp = BusinessLineSerializer(many=True, read_only=True)
     line_comp_id = serializers.PrimaryKeyRelatedField(queryset=BusinessLine.objects.all(), write_only=True, many=True, source='line_comp')
     class Meta:
         model = Company
