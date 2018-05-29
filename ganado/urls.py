@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.urls import path, include
 from rest_framework import routers
-from .views import FacturaViewSet, AnimalViewSet, LoteViewSet, CorralViewSet, AlimentoViewSet, PesoViewSet, RazasViewSet #AnimalAPI
+from .views import FacturaViewSet, AnimalViewSet, LoteViewSet, CorralViewSet, AlimentoViewSet, PesoViewSet, RazasViewSet, ResumenView #AnimalAPI
 
 
 
@@ -19,5 +19,6 @@ app_name='ganado'
 
 urlpatterns=[
 	url('^', include(router.urls)),
+	url('resumen/', ResumenView.as_view())
 	# url(r'^animalApi/$',AnimalAPI.as_view() )
 ]

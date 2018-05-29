@@ -1,5 +1,9 @@
 from import_export import resources
-from .models import Sale, SaleItem, Client, Company, BusinessLine
+from .models import Sale, SaleItem, Client, Company, BusinessLine, CuentaBanco
+
+class CuentaBancoResource(resources.ModelResource):
+	class Meta:
+		model = CuentaBanco
 
 class SaleResource(resources.ModelResource):
 	class Meta:

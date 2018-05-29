@@ -1,10 +1,18 @@
 from rest_framework import serializers
-from .models import Client, Sale, Company, BusinessLine
+from .models import Client, Sale, Company, BusinessLine, CuentaBanco
 from inventario.serializers import AlmacenSerializer
+from egresos.serializers import PurchaseSerializer
 
+
+class BasicSaleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sale
+        fields = '__all__'
 
 class BusinessLineSerializer(serializers.ModelSerializer):
     almacenes = AlmacenSerializer(many=True, read_only=True)
+    purchases = PurchaseSerializer(many=True, read_only=True)
+    sales = BasicSaleSerializer(many=True, read_only=True)
     class Meta:
         model = BusinessLine
         fields = '__all__'
@@ -55,15 +63,65 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+
+class CuentaBasicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CuentaBanco
+        fields = '__all__'
+
+
+
 class SaleSerializer(serializers.ModelSerializer):
     client = ClientSerializer(many=False, read_only=True)
+    client_id = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), write_only=True, many=False, allow_null=True, required=False,)
+    business_line = BusinessLineSerializer(many=False, read_only=True)
+    business_line_id = serializers.PrimaryKeyRelatedField(queryset=BusinessLine.objects.all(), write_only=True, many=False, allow_null=True, required=False,)
+    receivable = CuentaBasicSerializer(many=False, read_only=True)
+    receivable_id = serializers.PrimaryKeyRelatedField(queryset=CuentaBanco.objects.all(), write_only=True, many=False, allow_null=True, required=False,)
+
+
+    class Meta:
+        model = Sale
+        fields = '__all__'
+    def create(self, validated_data):
+        try:
+            client = validated_data.pop('client_id')
+        except:
+            client = None
+        try:
+            business_line = validated_data.pop('business_line_id')
+        except:
+            business_line = None
+        try:
+            receivable = validated_data.pop('receivable_id')
+        except:
+            receivable = None
+
+
+        client = Sale.objects.create(client=client, receivable=receivable, business_line=business_line, **validated_data)
+        return client
+
+
+class EditSaleSerializer(serializers.ModelSerializer):
+    client = ClientSerializer(many=False, read_only=True)
+    client_id = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), write_only=True, many=False, source='client')
+    business_line = BusinessLineSerializer(many=False, read_only=True)
+    business_line_id = serializers.PrimaryKeyRelatedField(queryset=BusinessLine.objects.all(), write_only=True,
+                                                          many=False, source='business_line')
+    receivable = CuentaBasicSerializer(many=False, read_only=True)
+    receivable_id = serializers.PrimaryKeyRelatedField(queryset=CuentaBanco.objects.all(), write_only=True, many=False, source='receivable')
 
     class Meta:
         model = Sale
         fields = '__all__'
 
 
-class BasicSaleSerializer(serializers.ModelSerializer):
+class CuentaBancoSerializer(serializers.ModelSerializer):
+    sales = SaleSerializer(many=True, read_only=True)
     class Meta:
-        model = Sale
+        model = CuentaBanco
         fields = '__all__'
+
+
+
