@@ -103,6 +103,7 @@ class EditAnimalSerializer(serializers.ModelSerializer):
 class BasicAnimalSerializer(serializers.ModelSerializer):
 	#aliments = AlimentoSerializer(many=True, read_only=True)
 	#ote = serializers.SerializerMethodField()
+	lote = BasicLoteSerializer(many=False, read_only=True)
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	class Meta:
