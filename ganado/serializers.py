@@ -93,8 +93,9 @@ class EditAnimalSerializer(serializers.ModelSerializer):
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	ref_factura_original = BasicFacturaSerializer(many=False, read_only=True)
-	ref_factura_original_id = serializers.PrimaryKeyRelatedField(queryset=Factura.objects.all(), write_only=True,
-																 many=False, source='ref_factura_original')
+
+	ref_factura_original_id = serializers.PrimaryKeyRelatedField(queryset=Factura.objects.all(), write_only=True, allow_null=True, required=False, source="ref_factura_original")
+
 	class Meta:
 		model = Animal
 		fields = '__all__'
@@ -104,6 +105,7 @@ class EditAnimalSerializer(serializers.ModelSerializer):
 class BasicAnimalSerializer(serializers.ModelSerializer):
 	#aliments = AlimentoSerializer(many=True, read_only=True)
 	#ote = serializers.SerializerMethodField()
+	lote = BasicLoteSerializer(many=False, read_only=True)
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	class Meta:

@@ -75,7 +75,6 @@ class SaleViewSet(viewsets.ModelViewSet):
 
         return queryset_list
 
-
 class BusinessLineViewSet(viewsets.ModelViewSet):
     queryset = BusinessLine.objects.all()
     serializer_class = BusinessLineSerializer

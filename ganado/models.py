@@ -82,6 +82,9 @@ class Animal(models.Model):
     # ano = models.PositiveIntegerField(default=2010, blank=True, null=True)
     # mes = models.CharField(max_length=100, choices=MONTHS, blank=True, null=True)
     # cuarto = models.CharField(max_length=100, blank=True, null=True)
+
+    def last_pesada(self):
+        return self.pesadas.last()
     
     def __unicode__(self):
         return self.arete_rancho

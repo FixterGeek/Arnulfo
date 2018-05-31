@@ -116,5 +116,25 @@ class RazasViewSet(viewsets.ModelViewSet):
 	serializer_class = RazaSerializer
 
 
+class ResumenView(APIView):
+	def get(self, request):
+		aretes_activos = len(Animal.objects.all().filter(status=True))
+		aretes_inactivos = len(Animal.objects.all().filter(status=True))
+		proximos = Animal.objects.all().filter(pesadas__peso__gte=350).distinct()
+		cuenta_proximos = len(proximos)
+		proximos = AnimalSerializer(proximos, many=True)
+		
+		print(proximos.data)
+
+		
+		data = {
+			"aretes_activos":aretes_activos,
+			"aretes_inactivos":aretes_inactivos,
+			"cuenta_proximos":cuenta_proximos,
+			"proximos":proximos.data			
+		}
+		return Response(data)
+
+
 
 
