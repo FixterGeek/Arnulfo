@@ -85,6 +85,7 @@ class Animal(models.Model):
 
     def last_pesada(self):
         return self.pesadas.last()
+
     
     def __unicode__(self):
         return self.arete_rancho

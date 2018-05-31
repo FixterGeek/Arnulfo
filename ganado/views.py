@@ -5,7 +5,10 @@ from rest_framework.response import Response
 from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer
 from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura
 from .pagination import AnimalPagination, LotePagination, FacturaPagination
-from django.db.models import Q
+from django.db.models import Q, Avg, Count, Min, Sum
+
+from datetime import datetime, timedelta
+
 
 class FacturaViewSet(viewsets.ModelViewSet):
 	queryset = Factura.objects.all()
@@ -118,20 +121,46 @@ class RazasViewSet(viewsets.ModelViewSet):
 
 class ResumenView(APIView):
 	def get(self, request):
-		aretes_activos = len(Animal.objects.all().filter(status=True))
-		aretes_inactivos = len(Animal.objects.all().filter(status=True))
-		proximos = Animal.objects.all().filter(pesadas__peso__gte=350).distinct()
+
+		#Básicos
+		aretes = Animal.objects.all().filter(status=True).annotate(aliments_total_kg=Sum('aliments__cantidad'))
+		aretes_activos = aretes.aggregate(valor_inicial=Sum('costo_inicial'), count=Count('id'), gastos_cash=Sum('aliments__costo'))
+		aretes_inactivos = len(Animal.objects.all().filter(status=False))
+		proximos = Animal.objects.all().filter(pesadas__peso__gte=350, status=True).distinct()
 		cuenta_proximos = len(proximos)
-		proximos = AnimalSerializer(proximos, many=True)
-		
-		print(proximos.data)
+
+		proximos = AnimalSerializer(proximos, many=True)		
+		gastos = GastoAnimal.objects.all().filter(animal__status=True ).aggregate(suma_gastos=Sum('costo'))
+		gastos_alimento = GastoAnimal.objects.all().filter(animal__status=True, tipo='Alimento').aggregate(costo_alimento=Sum('costo'), kg_alimento=Sum('cantidad'))
+		gastos_vacuna = GastoAnimal.objects.all().filter(animal__status=True, tipo='Vacuna').aggregate(suma_gastos_vacuna=Sum('costo'))					
+
+		#gdp y esas formulas locas
+		conversionPromedio = 0
+		gdpPromedio = 0
+		# (ultima_pesada - peso_inicial)/(fecha_ultima_pesada - fecha_inicial) y luego promediar el de todos los aretes activos
+		for a in aretes:
+			if a.last_pesada() != None:	
+				print(a.aliments_total_kg)			
+				diff_days=(a.last_pesada().created-a.fecha_entrada.date()).days
+				if diff_days!= 0:
+					gdp = (a.last_pesada().peso-a.peso_entrada)/diff_days				
+				gdpPromedio += gdp
+		gdpPromedio = gdpPromedio/len(aretes)
+
 
 		
 		data = {
 			"aretes_activos":aretes_activos,
 			"aretes_inactivos":aretes_inactivos,
 			"cuenta_proximos":cuenta_proximos,
-			"proximos":proximos.data			
+			"gdpPromedio":gdpPromedio,
+			"conversionPromedio":conversionPromedio,
+			"gastos":gastos,
+			"gastos_alimento":gastos_alimento,
+			"gastos_vacuna":gastos_vacuna,	
+			"proximos":proximos.data,
+			
+				
 		}
 		return Response(data)
 
