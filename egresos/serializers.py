@@ -1,7 +1,12 @@
 from rest_framework import serializers
-from .models import Provider, Purchase, Compras
+from .models import Provider, Purchase, Compras, GastoGanado
 from ingresos.models import BusinessLine
 
+
+class GastoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GastoGanado
+        fields = '__all__'
 
 class ProviderSerializer(serializers.ModelSerializer):
     class Meta:
