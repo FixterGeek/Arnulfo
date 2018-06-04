@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer
-from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura
+from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer, SaleNoteSerializer
+from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura, SaleNote
 from .pagination import AnimalPagination, LotePagination, FacturaPagination
 from django.db.models import Q, Avg, Count, Min, Sum
 
@@ -23,22 +23,6 @@ class FacturaViewSet(viewsets.ModelViewSet):
 				Q(factura__icontains=query)
 			).distinct()
 		return query_list
-
-
-#VIews for the API
-
-# class AnimalAPI(APIView):
-
-# 	def post(self, request):
-# 		data = request.data
-# 		print(data)
-# 		animal = BasicAnimalSerializer(data=request.data)
-# 		animal.is_valid()
-# 		animal.save()
-# 		instance = Animal.objects.get(id=animal.data['id'])
-# 		serializer2 = AnimalSerializer(instance)
-# 		serializer2.is_valid()
-# 		return Response(serializer2.data)
 
 
 class AnimalViewSet(viewsets.ModelViewSet):
@@ -118,12 +102,17 @@ class RazasViewSet(viewsets.ModelViewSet):
 	queryset = Raza.objects.all()
 	serializer_class = RazaSerializer
 
+class SaleNoteViewSet(viewsets.ModelViewSet):
+	queryset = SaleNote.objects.all()
+	serializer_class = SaleNoteSerializer
+
 
 class ResumenView(APIView):
 	def get(self, request):
 
 		#Básicos
-		aretes = Animal.objects.all().filter(status=True).annotate(aliments_total_kg=Sum('aliments__cantidad'))
+		aretes = Animal.objects.all().filter(status=True)
+		
 		aretes_activos = aretes.aggregate(valor_inicial=Sum('costo_inicial'), count=Count('id'), gastos_cash=Sum('aliments__costo'))
 		aretes_inactivos = len(Animal.objects.all().filter(status=False))
 		proximos = Animal.objects.all().filter(pesadas__peso__gte=350, status=True).distinct()
@@ -145,7 +134,9 @@ class ResumenView(APIView):
 				if diff_days!= 0:
 					gdp = (a.last_pesada().peso-a.peso_entrada)/diff_days				
 				gdpPromedio += gdp
+				conversion = (a.last_pesada().peso-a.peso_entrada)/diff_days
 		gdpPromedio = gdpPromedio/len(aretes)
+		#let conversion = ((lastPesada-a.peso_entrada)/alimentsQuantityTotal).toFixed(2)
 
 
 		
