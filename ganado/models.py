@@ -1,7 +1,20 @@
 from django.db import models
-from ingresos.models import Company
+from ingresos.models import Company, Client
 from planta_alimentos.models import Formula
 from vacunas.models import Vacuna
+
+
+class SaleNote(models.Model):
+    price = models.DecimalField(decimal_places=2, max_digits=10, blank=True, null=True)
+    kilograms = models.DecimalField(decimal_places=2, max_digits=10, blank=True, null=True)
+    client = models.ForeignKey(Client, related_name='sale_notes', on_delete=models.SET_NULL, blank=True, null=True)
+    carro = models.CharField(max_length=100, blank=True, null=True)
+    chofer = models.CharField(max_length=100, blank=True, null=True)
+    flete = models.DecimalField(decimal_places=2, max_digits=8, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__(self):
+        return 'nota {} del cliente'.format(self.id, self.client.client)
 
 
 class Factura(models.Model):
@@ -16,8 +29,7 @@ class Factura(models.Model):
 class Raza(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True, unique=True)
 
-
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Corral(models.Model):
@@ -33,7 +45,7 @@ class Corral(models.Model):
     # mes = models.CharField(max_length=100, choices=MONTHS, )
     # cuarto = models.PositiveIntegerField(default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return "Corral no. {}".format(self.no_corral)
 
 class Lote(models.Model):
@@ -41,7 +53,7 @@ class Lote(models.Model):
     status = models.BooleanField(default=True)
     corral = models.OneToOneField(Corral, related_name='lotes', on_delete=models.SET_NULL, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -78,15 +90,13 @@ class Animal(models.Model):
     merma = models.CharField(max_length=100, blank=True, null=True)
     empresa = models.ForeignKey(Company, related_name='animals', blank=True, null=True, on_delete=models.SET_NULL)
 
-    # numero_semana = models.PositiveIntegerField(default=0, blank=True, null=True)
-    # ano = models.PositiveIntegerField(default=2010, blank=True, null=True)
-    # mes = models.CharField(max_length=100, choices=MONTHS, blank=True, null=True)
-    # cuarto = models.CharField(max_length=100, blank=True, null=True)
+    sale_note = models.ForeignKey(SaleNote, related_name='animals', on_delete=models.SET_NULL, blank=True, null=True)
 
     def last_pesada(self):
         return self.pesadas.last()
+
     
-    def __unicode__(self):
+    def __str__(self):
         return self.arete_rancho
 
     class Meta:
@@ -118,6 +128,9 @@ class Peso(models.Model):
 
   def __unicode__(self):
     return "Animal {} Weigths {} kg".format(self.animal.id, self.peso)
+
+
+
 
 
 

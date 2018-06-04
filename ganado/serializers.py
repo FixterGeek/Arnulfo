@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza, Factura
+from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza, Factura, SaleNote
 from ingresos.serializers import CompanySerializer
-from ingresos.models import Company
+from ingresos.models import Company, Client
 
 
 class RazaSerializer(serializers.ModelSerializer):
@@ -93,7 +93,9 @@ class EditAnimalSerializer(serializers.ModelSerializer):
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	ref_factura_original = BasicFacturaSerializer(many=False, read_only=True)
+
 	ref_factura_original_id = serializers.PrimaryKeyRelatedField(queryset=Factura.objects.all(), write_only=True, allow_null=True, required=False, source="ref_factura_original")
+
 	class Meta:
 		model = Animal
 		fields = '__all__'
@@ -130,5 +132,34 @@ class FacturaSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Factura
 		fields = '__all__'
+
+class ClientSerializer(serializers.ModelSerializer):
+	class Meta: 
+		model = Client
+		fields = '__all__'
+
+class SaleNoteSerializer(serializers.ModelSerializer):
+	animals = AnimalSerializer(many=True, read_only=True)
+	animals_id = serializers.PrimaryKeyRelatedField(queryset=Animal.objects.all(), write_only=True, many=True)
+	client = ClientSerializer(many=False, read_only=True)
+	client_id = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), write_only=True, many=False)
+	
+	class Meta:
+		model = SaleNote
+		fields = '__all__'
+		
+	def create(self, validated_data):
+		print(validated_data)
+		try:
+			client = validated_data.pop('client_id')
+		except:
+			client = None
+		animals = validated_data.pop('animals_id')
+		sale_note = SaleNote.objects.create(client=client, **validated_data)
+		for a in animals:
+			sale_note.animals.add(a)
+			
+		return sale_note
+
 
 

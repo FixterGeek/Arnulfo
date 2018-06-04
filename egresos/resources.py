@@ -1,6 +1,10 @@
 from import_export import resources
-from .models import Purchase, Provider, PurchaseItem, Compras
+from .models import Purchase, Provider, PurchaseItem, Compras, GastoGanado
 
+
+class GastoResource(resources.ModelResource):
+    class Meta:
+        model = GastoGanado
 
 class PurchaseResource(resources.ModelResource):
     class Meta:
