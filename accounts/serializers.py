@@ -21,7 +21,7 @@ class BasicProfileSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Profile
-		fields = ['admin', 'ganado']#all sections
+		fields = ['admin', 'ganado', 'vacunas', 'alimentos']#all sections
 
 class UserSerializer(serializers.ModelSerializer):
 	profile=BasicProfileSerializer(many=False, read_only=False);
