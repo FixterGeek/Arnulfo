@@ -26,8 +26,8 @@ class FacturaViewSet(viewsets.ModelViewSet):
 
 
 class AnimalViewSet(viewsets.ModelViewSet):
-	#queryset = Animal.objects.all().filter(status=True)
 	queryset = Animal.objects.all()
+	#queryset = Animal.objects.all()
 	serializer_class = AnimalSerializer
 	pagination_class = AnimalPagination
 
@@ -39,9 +39,13 @@ class AnimalViewSet(viewsets.ModelViewSet):
 	 	return AnimalSerializer 
 
 	def get_queryset(self, *args, **kwargs):
+		print(self.action)
+		
 		query = self.request.GET.get("q")
 		lote_query = self.request.GET.get("lote")
 		queryset_list = super(AnimalViewSet,self).get_queryset()
+		if self.action == 'list':
+			queryset_list = queryset_list.filter(status=True)
 		if query:
 			queryset_list = queryset_list.filter(
 				Q(arete_rancho__icontains=query)|

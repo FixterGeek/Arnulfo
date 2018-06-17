@@ -44,6 +44,8 @@ class UsersViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
+	
+
 class ProfileViewSet(viewsets.ModelViewSet):
 	queryset = Profile.objects.all()
 	serializer_class = BasicProfileSerializer
