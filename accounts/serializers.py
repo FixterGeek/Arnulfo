@@ -21,7 +21,7 @@ class BasicProfileSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Profile
-		fields = ['admin', 'ganado']#all sections
+		fields = ['admin', 'ganado', 'vacunas', 'alimentos', 'cerdos', 'aves']#all sections
 
 class UserSerializer(serializers.ModelSerializer):
 	profile=BasicProfileSerializer(many=False, read_only=False);
@@ -48,11 +48,30 @@ class UserSerializer(serializers.ModelSerializer):
 
 	def update(self, instance, validated_data):
 		print(validated_data)
+		print(instance)
 		if(validated_data['password']):
 			password = validated_data['password']
 			instance.set_password(password)
 			instance.save()
+
+
+		
+		instance.email = validated_data.get('email', instance.email)
+		
+		instance.first_name = validated_data.get('first_name', instance.first_name)
+		profile_data = validated_data.pop('profile')	
+		profile = instance.profile
+		profile.admin = profile_data.get('admin',profile.admin)
+		profile.ganado = profile_data.get('ganado',profile.ganado)
+		profile.vacunas = profile_data.get('vacunas',profile.vacunas)
+		profile.alimentos = profile_data.get('alimentos',profile.alimentos)
+		profile.cerdos = profile_data.get('cerdos',profile.cerdos)
+		profile.aves = profile_data.get('aves',profile.aves)
+		profile.save()
+		instance.save()
 		return instance
+		
+
 
 
 

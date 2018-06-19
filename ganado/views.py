@@ -26,8 +26,8 @@ class FacturaViewSet(viewsets.ModelViewSet):
 
 
 class AnimalViewSet(viewsets.ModelViewSet):
-	#queryset = Animal.objects.all().filter(status=True)
 	queryset = Animal.objects.all()
+	#queryset = Animal.objects.all()
 	serializer_class = AnimalSerializer
 	pagination_class = AnimalPagination
 
@@ -39,9 +39,13 @@ class AnimalViewSet(viewsets.ModelViewSet):
 	 	return AnimalSerializer 
 
 	def get_queryset(self, *args, **kwargs):
+		print(self.action)
+		
 		query = self.request.GET.get("q")
 		lote_query = self.request.GET.get("lote")
 		queryset_list = super(AnimalViewSet,self).get_queryset()
+		if self.action == 'list':
+			queryset_list = queryset_list.filter(status=True)
 		if query:
 			queryset_list = queryset_list.filter(
 				Q(arete_rancho__icontains=query)|
@@ -111,14 +115,14 @@ class ResumenView(APIView):
 	def get(self, request):
 
 		#Básicos
-		aretes = Animal.objects.all().filter(status=True)
-		
+		aretes = Animal.objects.all().filter(status=True)							
 		aretes_activos = aretes.aggregate(valor_inicial=Sum('costo_inicial'), count=Count('id'), gastos_cash=Sum('aliments__costo'))
 		aretes_inactivos = len(Animal.objects.all().filter(status=False))
+		##mayores a 350kg
 		proximos = Animal.objects.all().filter(pesadas__peso__gte=350, status=True).distinct()
 		cuenta_proximos = len(proximos)
-
 		proximos = AnimalSerializer(proximos, many=True)		
+		#gastos
 		gastos = GastoAnimal.objects.all().filter(animal__status=True ).aggregate(suma_gastos=Sum('costo'))
 		gastos_alimento = GastoAnimal.objects.all().filter(animal__status=True, tipo='Alimento').aggregate(costo_alimento=Sum('costo'), kg_alimento=Sum('cantidad'))
 		gastos_vacuna = GastoAnimal.objects.all().filter(animal__status=True, tipo='Vacuna').aggregate(suma_gastos_vacuna=Sum('costo'))					
@@ -126,17 +130,37 @@ class ResumenView(APIView):
 		#gdp y esas formulas locas
 		conversionPromedio = 0
 		gdpPromedio = 0
+		cdpPromediokg = 0
+		cdpPromedioCash = 0
 		# (ultima_pesada - peso_inicial)/(fecha_ultima_pesada - fecha_inicial) y luego promediar el de todos los aretes activos
 		for a in aretes:
+			if len(a.aliments.all()) >= 1:
+				a_alimentos_kg = 0
+				a_alimentos_cash = 0
+				a_vacunas_cash = 0
+				for ga in a.aliments.all():
+					print(ga)
+					if ga.tipo == 'Alimento':
+						a_alimentos_kg += ga.cantidad
+						a_alimentos_cash += ga.costo
+					if ga.tipo == 'Vacuna':
+						a_vacunas_cash += ga.costo								
 			if a.last_pesada() != None:	
-				print(a.aliments_total_kg)			
 				diff_days=(a.last_pesada().created-a.fecha_entrada.date()).days
 				if diff_days!= 0:
 					gdp = (a.last_pesada().peso-a.peso_entrada)/diff_days				
 				gdpPromedio += gdp
-				conversion = (a.last_pesada().peso-a.peso_entrada)/diff_days
+				#consumo diario promedio hasta la ultima pesada
+				cdp = (a_alimentos_kg/diff_days)
+				cdpCash = (a_alimentos_cash/diff_days)
+				cdpPromedioCash += cdpCash
+				cdpPromediokg += cdp
+				#conversion por animal				
+				conversion = (a.last_pesada().peso-a.peso_entrada)/a_alimentos_kg
+				conversionPromedio += conversion				
 		gdpPromedio = gdpPromedio/len(aretes)
-		#let conversion = ((lastPesada-a.peso_entrada)/alimentsQuantityTotal).toFixed(2)
+		conversionPromedio = conversionPromedio/len(aretes)
+		#let conversion = ((a.lastPesada()-a.peso_entrada)/a.alimentsQuantityTotal)
 
 
 		
@@ -146,6 +170,8 @@ class ResumenView(APIView):
 			"cuenta_proximos":cuenta_proximos,
 			"gdpPromedio":gdpPromedio,
 			"conversionPromedio":conversionPromedio,
+			"cdpPromediokg":cdpPromediokg,
+			"cdpPromedioCash":cdpPromedioCash,
 			"gastos":gastos,
 			"gastos_alimento":gastos_alimento,
 			"gastos_vacuna":gastos_vacuna,	
