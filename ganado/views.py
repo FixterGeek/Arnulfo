@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer, SaleNoteSerializer
 from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura, SaleNote
-from .pagination import AnimalPagination, LotePagination, FacturaPagination
+from .pagination import AnimalPagination, LotePagination, FacturaPagination, SaleNotePagination
 from django.db.models import Q, Avg, Count, Min, Sum
 
 from datetime import datetime, timedelta
@@ -40,12 +40,14 @@ class AnimalViewSet(viewsets.ModelViewSet):
 
 	def get_queryset(self, *args, **kwargs):
 		print(self.action)
-		
+		print(self.request.data)
+
 		query = self.request.GET.get("q")
 		lote_query = self.request.GET.get("lote")
+		status = self.request.GET.get("s")
 		queryset_list = super(AnimalViewSet,self).get_queryset()
-		if self.action == 'list':
-			queryset_list = queryset_list.filter(status=True)
+		# if self.action == 'list':
+		# 	queryset_list = queryset_list.filter(status=True)
 		if query:
 			queryset_list = queryset_list.filter(
 				Q(arete_rancho__icontains=query)|
@@ -54,12 +56,18 @@ class AnimalViewSet(viewsets.ModelViewSet):
 				).distinct()
 		if lote_query:
 			queryset_list = queryset_list.filter(Q(lote__name__iexact=lote_query))
+
+		if status and status == 'false':
+			queryset_list = queryset_list.filter(status=False)
+		if self.action=='list' and (status != 'false' or not status):
+			queryset_list = queryset_list.filter(status=True)
 		return queryset_list
 
 class LoteViewSet(viewsets.ModelViewSet):
 	queryset = Lote.objects.all()
 	serializer_class = LoteSerializer
 	#pagination_class = LotePagination
+
 
 	def get_serializer_class(self):
 		if self.action == 'list':
@@ -70,13 +78,14 @@ class LoteViewSet(viewsets.ModelViewSet):
 
 	def get_queryset(self, *args, **kwargs):
 		query = self.request.GET.get("q")
+
 		
 		queryset_list = super(LoteViewSet,self).get_queryset()
 		if query:
 			queryset_list = queryset_list.filter(
 				Q(name__icontains=query)
 				).distinct()
-	
+		print(queryset_list[1].animals.all().filter(status=True))
 		return queryset_list
 
 class CorralViewSet(viewsets.ModelViewSet):
@@ -109,6 +118,7 @@ class RazasViewSet(viewsets.ModelViewSet):
 class SaleNoteViewSet(viewsets.ModelViewSet):
 	queryset = SaleNote.objects.all()
 	serializer_class = SaleNoteSerializer
+	pagination_class = SaleNotePagination
 
 
 class ResumenView(APIView):

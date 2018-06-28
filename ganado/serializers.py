@@ -88,7 +88,7 @@ class EditAnimalSerializer(serializers.ModelSerializer):
 	empresa_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), write_only=True, allow_null=True, required=False, source='empresa', many=False)
 	raza = RazaSerializer(many=False, read_only=True)
 	raza_id = serializers.PrimaryKeyRelatedField(queryset=Raza.objects.all(), write_only=True, allow_null=True, required=False, source='raza')
-	lote = BasicLoteSerializer(many=False, read_only=True)
+	lote = BasicLoteSerializer(many=False, read_only=True, allow_null=True, required=False)
 	lote_id = serializers.PrimaryKeyRelatedField(queryset=Lote.objects.all(), write_only=True, allow_null=True, required=False, source='lote')
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
@@ -105,7 +105,7 @@ class EditAnimalSerializer(serializers.ModelSerializer):
 class BasicAnimalSerializer(serializers.ModelSerializer):
 	#aliments = AlimentoSerializer(many=True, read_only=True)
 	#ote = serializers.SerializerMethodField()
-	lote = BasicLoteSerializer(many=False, read_only=True)
+	lote = BasicLoteSerializer(many=False, read_only=True, allow_null=True)
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	class Meta:
@@ -158,7 +158,7 @@ class SaleNoteSerializer(serializers.ModelSerializer):
 		sale_note = SaleNote.objects.create(client=client, **validated_data)
 		for a in animals:
 			sale_note.animals.add(a)
-			
+			print('added')
 		return sale_note
 
 
