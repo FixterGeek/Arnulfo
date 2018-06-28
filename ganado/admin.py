@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza, Factura
+from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza, Factura, SaleNote
 from django.http import HttpResponse
-from .resources import LoteResource, AnimalResource, GastoAnimalResource, PesoResource, RazaResource, CorralResource, FacturaResource
+from .resources import LoteResource, AnimalResource, GastoAnimalResource, PesoResource, RazaResource, CorralResource, FacturaResource, SaleNoteResource
 from import_export.admin import ImportExportModelAdmin
 
 class AnimalAdmin(ImportExportModelAdmin):
@@ -30,6 +30,9 @@ class RazaAdmin(ImportExportModelAdmin):
 class FacturaAdmin(ImportExportModelAdmin):
     resource_class = FacturaResource
 
+class SaleNoteAdmin(ImportExportModelAdmin):
+    resource_class = SaleNoteResource
+
 admin.site.register(Lote, LoteAdmin)
 admin.site.register(Animal, AnimalAdmin)
 admin.site.register(Corral, CorralAdmin)
@@ -37,5 +40,6 @@ admin.site.register(GastoAnimal, GastoAnimalAdmin)
 admin.site.register(Peso, PesoAdmin)
 admin.site.register(Raza, RazaAdmin)
 admin.site.register(Factura, FacturaAdmin)
+admin.site.register(SaleNote, SaleNoteAdmin)
 # Register your models here.
 
