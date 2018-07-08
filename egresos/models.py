@@ -16,6 +16,7 @@ class Provider(models.Model):
     name_contact = models.CharField(max_length=140, blank=True)
     phone_contact = models.CharField(validators=[phone_regex], max_length=10, blank=True)
     comments_contact = models.CharField(max_length=140, blank=True)
+    
 
     def __str__(self):
         return self.provider
