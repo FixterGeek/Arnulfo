@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Provider, Purchase, Compras, GastoGanado
-from ingresos.models import BusinessLine
+from ingresos.models import BusinessLine, Company
 
 
 class GastoSerializer(serializers.ModelSerializer):
@@ -18,6 +18,11 @@ class BusinessLineEgresosSerializer(serializers.ModelSerializer):
         model = BusinessLine
         fields = '__all__'
 
+class BasicCompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = '__all__'
+
 
 class BasicPurchaseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,11 +34,17 @@ class BasicCompraSerializer(serializers.ModelSerializer):
         model = Compras
         fields = '__all__'
 
+class CompanyBasicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = '__all__'
+
 
 class ComprasSerializer(serializers.ModelSerializer):
     proveedor = ProviderSerializer(many=False, read_only=True)
     proveedor_id = serializers.PrimaryKeyRelatedField(queryset=Provider.objects.all(), write_only=True,
-                                                      many=False, allow_null=True, required=False, )
+                                                      many=False, allow_null=True, required=False)
+
     linea_compras = BusinessLineEgresosSerializer(many=False, read_only=True)
     linea_compras_id = serializers.PrimaryKeyRelatedField(queryset=BusinessLine.objects.all(), write_only=True,
                                                           many=False, allow_null=True, required=False, )
@@ -76,6 +87,10 @@ class PurchaseSerializer(serializers.ModelSerializer):
     compra_egreso = BasicCompraSerializer(many=False, read_only=True)
     compra_egreso_id = serializers.PrimaryKeyRelatedField(queryset=Compras.objects.all(), write_only=True, many=False, allow_null=True, required=False)
 
+    empresa = CompanyBasicSerializer(many=False, read_only=True)
+    empresa_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), write_only=True,
+                                                      many=False, allow_null=True, required=False)
+
 
     class Meta:
         model = Purchase
@@ -94,8 +109,12 @@ class PurchaseSerializer(serializers.ModelSerializer):
             compra_egreso = validated_data.pop('compra_egreso_id')
         except:
             compra_egreso = None
+        try:
+            empresa = validated_data.pop('empresa_id')
+        except:
+            empresa = None
 
-        purchase = Purchase.objects.create(provider_egreso=provider_egreso, business_egreso=business_egreso, compra_egreso=compra_egreso, **validated_data)
+        purchase = Purchase.objects.create(provider_egreso=provider_egreso, business_egreso=business_egreso, compra_egreso=compra_egreso,empresa=empresa, **validated_data)
         return purchase
 
 class EditPurchaseSerializer(serializers.ModelSerializer):
@@ -108,6 +127,9 @@ class EditPurchaseSerializer(serializers.ModelSerializer):
     compra_egreso = BasicCompraSerializer(many=False, read_only=True)
     compra_egreso_id = serializers.PrimaryKeyRelatedField(queryset=Compras.objects.all(), write_only=True, many=False,
                                                           source='compra_egreso')
+    empresa = BasicCompanySerializer(many=False, read_only=True)
+    empresa_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), write_only=True, many=False,
+                                                          source='empresa')
 
     class Meta:
         model = Purchase
