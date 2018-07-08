@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from ingresos.models import BusinessLine
+from ingresos.models import BusinessLine, Company
+
 
 
 class Provider(models.Model):
@@ -57,12 +58,14 @@ class Purchase (models.Model):
     paid = models.BooleanField(default=False)
     business_egreso = models.ForeignKey(BusinessLine, related_name="purchases", on_delete=models.PROTECT, blank=True,
                                       null=True)
+    empresa = models.ForeignKey(Company, related_name="purchases", on_delete=models.SET_NULL, blank=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     type = models.CharField(max_length=100, choices=TYPE, blank=True, null=True)
     concepto_purchase = models.CharField(max_length=140, blank=True, null=True)
-    compra_egreso = models.ForeignKey(Compras, related_name="purchases", on_delete=models.PROTECT, blank=True,
-                                      null=True)
+    compra_egreso = models.ForeignKey(Compras, related_name="purchases", on_delete=models.PROTECT, blank=True,null=True)
     compra_check = models.BooleanField(default=False)
+
+
 
 
     class Meta:
