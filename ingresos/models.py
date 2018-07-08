@@ -21,11 +21,12 @@ class Client(models.Model):
     email = models.EmailField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
                                  message="El número de teléfono debe ingresarse en el formato: '7751234567'. Hasta 10 dígitos permitidos.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
     direct_contact = models.BooleanField(default=False)
     name_contact = models.CharField(max_length=140, blank=True)
     phone_contact = models.CharField(validators=[phone_regex], max_length=10, blank=True)
-    comments_contact = models.CharField(max_length=140, blank=True)
+    comments_contact = models.CharField(max_length=140, blank=True, null=True)
+    credit = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.client
@@ -57,6 +58,7 @@ class Company(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
                                  message="El número de teléfono debe ingresarse en el formato: '7751234567'. Hasta 10 dígitos permitidos.")
     phone_compa = models.CharField(validators=[phone_regex], max_length=10, blank=True)
+    address = models.TextField(blank=True, null=True)
     #direct_contact = models.BooleanField(default=False)
     #name_contact = models.CharField(max_length=140, blank=True)
     #phone_contact = models.CharField(validators=[phone_regex], max_length=10, blank=True)
@@ -80,6 +82,7 @@ class Sale (models.Model):
              )
     created = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, related_name="sales", on_delete=models.PROTECT, blank=True, null=True)
+    empresa = models.ForeignKey(Company, related_name="incomes", on_delete=models.SET_NULL, blank=True, null=True)
     sale_check = models.BooleanField(default=False)
     no_scheck = models.CharField(max_length=140, blank=True, null=True)
     paid = models.BooleanField(default=False)
@@ -87,6 +90,11 @@ class Sale (models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     receivable = models.ForeignKey(CuentaBanco, related_name='sales', on_delete=models.PROTECT, blank=True, null=True)
     concepto = models.CharField(max_length=140, blank=True, null=True)
+    sale_date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    cantidad = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    unidad = models.CharField(max_length=100, blank=True, null=True)
+    comment = models.CharField(max_length=200, blank=True, null=True)
+    is_sale = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-id"]

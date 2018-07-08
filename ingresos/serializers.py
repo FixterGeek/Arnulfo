@@ -98,6 +98,8 @@ class SaleSerializer(serializers.ModelSerializer):
     business_line_id = serializers.PrimaryKeyRelatedField(queryset=BusinessLine.objects.all(), write_only=True, many=False, allow_null=True, required=False,)
     receivable = CuentaBasicSerializer(many=False, read_only=True)
     receivable_id = serializers.PrimaryKeyRelatedField(queryset=CuentaBanco.objects.all(), write_only=True, many=False, allow_null=True, required=False,)
+    empresa = CompanyBasicSerializer(many=False, read_only=True)
+    empresa_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), write_only=True, many=False, allow_null=True, required=False,)
 
 
     class Meta:
@@ -116,9 +118,13 @@ class SaleSerializer(serializers.ModelSerializer):
             receivable = validated_data.pop('receivable_id')
         except:
             receivable = None
+        try:
+            empresa = validated_data.pop('empresa_id')
+        except:
+            empresa = None
 
 
-        client = Sale.objects.create(client=client, receivable=receivable, business_line=business_line, **validated_data)
+        client = Sale.objects.create(client=client, receivable=receivable, business_line=business_line, empresa=empresa, **validated_data)
         return client
 
 
@@ -130,6 +136,9 @@ class EditSaleSerializer(serializers.ModelSerializer):
                                                           many=False, source='business_line')
     receivable = CuentaBasicSerializer(many=False, read_only=True)
     receivable_id = serializers.PrimaryKeyRelatedField(queryset=CuentaBanco.objects.all(), write_only=True, many=False, source='receivable')
+
+    empresa = CompanyBasicSerializer(many=False, read_only=True)
+    empresa_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), write_only=True, many=False, source='empresa')
 
     class Meta:
         model = Sale
