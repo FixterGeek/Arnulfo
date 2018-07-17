@@ -11,6 +11,7 @@ from ingresos import urls as ingresosUrls
 from planta_alimentos import urls as plantaUrls
 from vacunas import urls as vacunasUrls
 from inventario import urls as inventarioUrls
+from catalogos import urls as catalogosUrls
 
 
 class Home(TemplateView):
@@ -26,6 +27,7 @@ urlpatterns = [
     path('api/planta_alimentos/', include(plantaUrls, namespace='planta_alimentos-urls')),
     path('api/vacunas/', include(vacunasUrls, namespace='vacunas-urls')),
     path('api/inventario/', include(inventarioUrls, namespace='inventario-urls')),
+    path('api/catalogos/', include(catalogosUrls, namespace='catalogos-urls')),
    
     url(r'^api-auth/', include('rest_framework.urls')),
     url(
