@@ -7,7 +7,7 @@ class CuentaBanco(models.Model):
     banco=models.CharField(max_length=140, blank=True, null=True)
     clabe=models.CharField(max_length=140, blank=True, null=True, unique=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.cuenta
 
     class Meta:
@@ -28,7 +28,7 @@ class Client(models.Model):
     comments_contact = models.CharField(max_length=140, blank=True, null=True)
     credit = models.CharField(max_length=100, blank=True, null=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.client
 
     class Meta:
@@ -38,7 +38,7 @@ class Client(models.Model):
 class BusinessLine(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     class Meta:
@@ -64,7 +64,7 @@ class Company(models.Model):
     #phone_contact = models.CharField(validators=[phone_regex], max_length=10, blank=True)
     #comments_contact = models.CharField(max_length=140, blank=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.company
 
     class Meta:
@@ -99,7 +99,7 @@ class Sale (models.Model):
     class Meta:
         ordering = ["-id"]
 
-    def __str__(self):
+    def __unicode__(self):
         return "Venta no. {}".format(self.id)
 
 #Prueba
@@ -111,7 +111,7 @@ class SaleItem(models.Model):
     weigth = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     animal_ref = models.CharField(max_length=100, default="")
 
-    def __str__(self):
+    def __unicode__(self):
         return '{}'.format(self.id)
 
     def get_cost(self):

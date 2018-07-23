@@ -9,7 +9,7 @@ class Almacen(models.Model):
 	bline = models.ForeignKey(BusinessLine, related_name='almacenes',blank=True, null=True, on_delete=models.SET_NULL)
 	company = models.ForeignKey(Company, related_name='almacenes', blank=True, null=True, on_delete=models.SET_NULL)
 
-	def __str__(self):
+	def __unicode__(self):
 		return self.name
 
 class ItemAlmacen(models.Model):
@@ -24,5 +24,5 @@ class ItemAlmacen(models.Model):
 	vacuna = models.ForeignKey(Vacuna, related_name='items_almacen', blank=True, null=True, on_delete=models.SET_NULL)
 	date_added = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
-	def __str__(self):
+	def __unicode__(self):
 		return 'item {} de almacen {}'.format(self.id, self.almacen.id)
