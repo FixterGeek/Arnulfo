@@ -10,5 +10,5 @@ class Vacuna(models.Model):
     cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     concentration = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.vaccine

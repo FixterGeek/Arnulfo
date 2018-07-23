@@ -18,7 +18,7 @@ class Provider(models.Model):
     comments_contact = models.CharField(max_length=140, blank=True)
     
 
-    def __str__(self):
+    def __unicode__(self):
         return self.provider
 
     class Meta:
@@ -37,7 +37,7 @@ class Compras(models.Model):
     class Meta:
         ordering = ["-id"]
 
-    def __str__(self):
+    def __unicode__(self):
         return self.no_factura
 
 
@@ -72,7 +72,7 @@ class Purchase (models.Model):
     class Meta:
         ordering = ["-id"]
 
-    def __str__(self):
+    def __unicode__(self):
         return "Compra no. {}".format(self.id)
 
 
@@ -81,7 +81,7 @@ class Product(models.Model):
     category = models.CharField(max_length = 140)
     uprice = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 class GastoGanado(models.Model):
@@ -89,7 +89,7 @@ class GastoGanado(models.Model):
     monto= models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateField(auto_now_add=True, db_index=True, blank=True, null=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.concepto
 
 
@@ -102,7 +102,7 @@ class PurchaseItem(models.Model):
     weigth = models.DecimalField(max_digits=10, decimal_places=2)
     animal_ref = models.CharField(max_length=100)
 
-    def __str__(self):
+    def __unicode__(self):
         return '{}'.format(self.id)
 
     def get_cost(self):

@@ -13,14 +13,20 @@ class SaleNote(models.Model):
     flete = models.DecimalField(decimal_places=2, max_digits=8, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
-    def __str__(self):
+    # def __str__(self):
+    #     return 'nota {} del cliente'.format(self.id, self.client.client)
+        
+    def __unicode__(self):
         return 'nota {} del cliente'.format(self.id, self.client.client)
 
 
 class Factura(models.Model):
     factura = models.CharField(max_length=100, blank=True, null=True)
 
-    def __str__(self):
+    # def __str__(self):
+    #     return self.factura
+
+    def __unicode__(self):
         return self.factura
 
     class Meta:
@@ -29,7 +35,7 @@ class Factura(models.Model):
 class Raza(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True, unique=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 class Corral(models.Model):
@@ -45,7 +51,7 @@ class Corral(models.Model):
     # mes = models.CharField(max_length=100, choices=MONTHS, )
     # cuarto = models.PositiveIntegerField(default=0)
 
-    def __str__(self):
+    def __unicode__(self):
         return "Corral no. {}".format(self.no_corral)
 
 class Lote(models.Model):
@@ -53,7 +59,7 @@ class Lote(models.Model):
     status = models.BooleanField(default=True)
     corral = models.OneToOneField(Corral, related_name='lotes', on_delete=models.SET_NULL, blank=True, null=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     class Meta:
@@ -96,7 +102,10 @@ class Animal(models.Model):
         return self.pesadas.last()
 
     
-    def __str__(self):
+    # def __str__(self):
+    #     return self.arete_rancho
+
+    def __unicode__(self):
         return self.arete_rancho
 
     class Meta:
@@ -116,7 +125,8 @@ class GastoAnimal(models.Model):
     formula = models.ForeignKey(Formula, related_name='gastos_animal', on_delete=models.PROTECT, blank=True, null=True) 
     vacuna = models.ForeignKey(Vacuna, related_name='gastos_animal',  on_delete=models.PROTECT, blank=True, null=True)
     
-
+    # def __str__(self):
+    #     return "Gasto no. {}, {} ".format(self.id, self.tipo)
 
     def __unicode__(self):
         return "Gasto no. {}, {} ".format(self.id, self.tipo)
