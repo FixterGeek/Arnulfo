@@ -15,5 +15,5 @@ class Profile(models.Model):
 	aves = models.BooleanField(default=False, help_text='Selecciona si este usuario usará la sección del aves')
 
 
-	def __str__(self):
+	def __unicode__(self):
 		return self.user.username
