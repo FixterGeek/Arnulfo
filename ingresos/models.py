@@ -97,7 +97,7 @@ class Sale (models.Model):
     is_sale = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ["-id"]
+        ordering = ["-created"]
 
     def __unicode__(self):
         return "Venta no. {}".format(self.id)

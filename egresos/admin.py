@@ -28,3 +28,4 @@ admin.site.register(PurchaseItem, PurchaseItemAdmin)
 admin.site.register(Compras, ComprasAdmin)
 admin.site.register(GastoGanado, GastoAdmin)
 
+
