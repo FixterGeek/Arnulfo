@@ -26,7 +26,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         queryset_list = super(CompanyViewSet, self).get_queryset()
         if query:
             queryset_list = queryset_list.filter(
-                Q(company__icontains=query)
+                Q(company__icontains=query)                
             ).distinct()
 
         return queryset_list
@@ -63,10 +63,20 @@ class SaleViewSet(viewsets.ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         query = self.request.GET.get("q")
         query_paid = self.request.GET.get("cobrado")
+        date1 = self.request.GET.get("date1")
+        date2 = self.request.GET.get("date2")
+
+
         queryset_list = super(SaleViewSet, self).get_queryset()
+
+        if date1 and date2:
+            #queryset_list = queryset_list.filter(sale_date__range=(date1, date2)) 
+            queryset_list = queryset_list.filter(sale_date__gte=date1, sale_date__lte=date2)
+            print(date1)
         if query:
             queryset_list = queryset_list.filter(
-                Q(client__client__icontains=query)
+                Q(client__client__icontains=query)|
+                Q(empresa__company__icontains=query)
             ).distinct()
         if query_paid:
             queryset_list = queryset_list.filter(

@@ -16,6 +16,7 @@ class Provider(models.Model):
     name_contact = models.CharField(max_length=140, blank=True)
     phone_contact = models.CharField(validators=[phone_regex], max_length=10, blank=True)
     comments_contact = models.CharField(max_length=140, blank=True)
+    credit = models.CharField(max_length=140, blank=True)
     
 
     def __unicode__(self):
@@ -77,15 +78,15 @@ class Purchase (models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length= 140)
-    category = models.CharField(max_length = 140)
+    name = models.CharField(max_length=140)
+    category = models.CharField(max_length=40)
     uprice = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __unicode__(self):
         return self.name
 
 class GastoGanado(models.Model):
-    concepto = models.CharField(max_length = 140)
+    concepto = models.CharField(max_length=140)
     monto= models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateField(auto_now_add=True, db_index=True, blank=True, null=True)
 
