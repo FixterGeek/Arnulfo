@@ -1,7 +1,17 @@
 from rest_framework import serializers
-from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza, Factura, SaleNote
+from .models import Animal, Lote, Corral, GastoAnimal, Peso, Raza, Factura, SaleNote, FierroO, FierroN
 from ingresos.serializers import CompanySerializer
 from ingresos.models import Company, Client
+
+class FierroOSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = FierroO
+		fields = '__all__'
+
+class FierroNSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = FierroN
+		fields = '__all__'
 
 
 class RazaSerializer(serializers.ModelSerializer):
@@ -56,6 +66,10 @@ class AnimalSerializer(serializers.ModelSerializer):
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	ref_factura_original = BasicFacturaSerializer(many=False, read_only=True)
 	ref_factura_original_id = serializers.PrimaryKeyRelatedField(queryset=Factura.objects.all(), write_only=True, allow_null=True, required=False)
+	fierroO = FierroOSerializer(many=False, read_only=True)
+	fierroO_id = serializers.PrimaryKeyRelatedField(queryset=FierroO.objects.all(), write_only=True, allow_null=True, required=False)
+	fierroN = FierroNSerializer(many=False, read_only=True)
+	fierroN_id = serializers.PrimaryKeyRelatedField(queryset=FierroN.objects.all(), write_only=True, allow_null=True, required=False)
 	class Meta:
 		model = Animal
 		fields = '__all__'
@@ -78,9 +92,19 @@ class AnimalSerializer(serializers.ModelSerializer):
 			ref_factura_original = validated_data.pop('ref_factura_original_id')
 		except:
 			ref_factura_original = None
+		try:
+			fierroO = validated_data.pop('fierroO_id')
+		except:
+			fierroO = None
+		try:
+			fierroN = validated_data.pop('fierroN_id')
+		except:
+			fierroN = None
+
+
 			
 		
-		animal = Animal.objects.create(lote=lote, raza=raza, empresa=empresa, ref_factura_original=ref_factura_original, **validated_data)
+		animal = Animal.objects.create(lote=lote, raza=raza, empresa=empresa, ref_factura_original=ref_factura_original,fierroO=fierroO, fierroN=fierroN, **validated_data)
 		return animal
 
 class EditAnimalSerializer(serializers.ModelSerializer):
@@ -93,8 +117,11 @@ class EditAnimalSerializer(serializers.ModelSerializer):
 	aliments = AlimentoSerializer(many=True, read_only=True)
 	pesadas = BasicPesoSerializer(many=True, read_only=True)
 	ref_factura_original = BasicFacturaSerializer(many=False, read_only=True)
-
 	ref_factura_original_id = serializers.PrimaryKeyRelatedField(queryset=Factura.objects.all(), write_only=True, allow_null=True, required=False, source="ref_factura_original")
+	fierroO = FierroOSerializer(many=False, read_only=True)
+	fierroO_id = serializers.PrimaryKeyRelatedField(queryset=FierroO.objects.all(), write_only=True, allow_null=True, required=False, source="fierroO")
+	fierroN = FierroNSerializer(many=False, read_only=True)
+	fierroN_id = serializers.PrimaryKeyRelatedField(queryset=FierroN.objects.all(), write_only=True, allow_null=True, required=False, source="fierroN")
 
 	class Meta:
 		model = Animal
@@ -149,7 +176,7 @@ class SaleNoteSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 		
 	def create(self, validated_data):
-		print(validated_data)
+		#print(validated_data)
 		try:
 			client = validated_data.pop('client_id')
 		except:

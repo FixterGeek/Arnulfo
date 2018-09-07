@@ -2,13 +2,20 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer, SaleNoteSerializer
-from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura, SaleNote
+from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer, SaleNoteSerializer, FierroOSerializer, FierroNSerializer
+from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura, SaleNote, FierroO, FierroN
 from .pagination import AnimalPagination, LotePagination, FacturaPagination, SaleNotePagination
 from django.db.models import Q, Avg, Count, Min, Sum
 
 from datetime import datetime, timedelta
 
+class FierroOViewSet(viewsets.ModelViewSet):
+	queryset = FierroO.objects.all()
+	serializer_class = FierroOSerializer
+
+class FierroNViewSet(viewsets.ModelViewSet):
+	queryset = FierroN.objects.all()
+	serializer_class = FierroNSerializer
 
 class FacturaViewSet(viewsets.ModelViewSet):
 	queryset = Factura.objects.all()

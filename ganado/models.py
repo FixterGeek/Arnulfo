@@ -4,6 +4,21 @@ from planta_alimentos.models import Formula
 from vacunas.models import Vacuna
 
 
+
+class FierroO(models.Model):
+    codigo = models.CharField(max_length=100, blank=True, null=True)
+    imagen = models.ImageField(upload_to='fierros/o', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.codigo
+
+class FierroN(models.Model):
+    codigo = models.CharField(max_length=100, blank=True, null=True)
+    imagen = models.ImageField(upload_to='fierros/n', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.codigo
+
 class SaleNote(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=10, blank=True, null=True)
     kilograms = models.DecimalField(decimal_places=2, max_digits=10, blank=True, null=True)
@@ -97,6 +112,9 @@ class Animal(models.Model):
     empresa = models.ForeignKey(Company, related_name='animals', blank=True, null=True, on_delete=models.SET_NULL)
 
     sale_note = models.ForeignKey(SaleNote, related_name='animals', on_delete=models.SET_NULL, blank=True, null=True)
+
+    fierroO = models.ForeignKey(FierroO, related_name="animals", on_delete=models.SET_NULL, blank=True, null=True)
+    fierroN = models.ForeignKey(FierroN, related_name="animals", on_delete=models.SET_NULL, blank=True, null=True)
 
     def last_pesada(self):
         return self.pesadas.last()
