@@ -139,6 +139,10 @@ class BasicAnimalSerializer(serializers.ModelSerializer):
 		model = Animal
 		fields = '__all__'
 
+class JustAnimalSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Animal
+		fields = '__all__'
 
 class PesoSerializer(serializers.ModelSerializer):
 	animal = BasicAnimalSerializer(many=False, read_only=True)
@@ -149,10 +153,17 @@ class PesoSerializer(serializers.ModelSerializer):
 class LoteSerializer(serializers.ModelSerializer):
 
 	corral = BasicCorralSerializer(many=False, read_only=True)
-	animals = BasicAnimalSerializer(many=True, read_only=True)
+	#animals = JustAnimalSerializer(many=True, read_only=True)
+	animals = serializers.SerializerMethodField()
 	class Meta:
 		model = Lote
 		fields = '__all__'
+
+	def get_animals(self, lote):
+		qs = Animal.objects.filter(status=True, lote=lote)
+		serializer = JustAnimalSerializer(instance=qs, many=True)
+		return serializer.data
+
 
 class FacturaSerializer(serializers.ModelSerializer):
 	animals = AnimalSerializer(many=True, read_only=True)
