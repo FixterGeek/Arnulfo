@@ -92,7 +92,11 @@ class LoteViewSet(viewsets.ModelViewSet):
 			queryset_list = queryset_list.filter(
 				Q(name__icontains=query)
 				).distinct()
-		print(queryset_list[1].animals.all().filter(status=True))
+
+		
+			#lista.append(i)
+		#print(queryset_list[1].animals.all().filter(status=True))
+		
 		return queryset_list
 
 class CorralViewSet(viewsets.ModelViewSet):
