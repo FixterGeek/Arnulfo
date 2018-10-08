@@ -36,7 +36,8 @@ class DisposicionSerializer(serializers.ModelSerializer):
 		tasa = validated_data.pop('tasa')
 		saldo_a = monto
 		#generando los recibos
-		for i in range(0,plazo):			
+		#Recibo.objects.create(disposicion=d,fecha=d_date, capital=0, saldo=monto, intereses=0)
+		for i in range(0,plazo+1):			
 			pago=0
 			saldo=0			
 			intereses=0
@@ -44,19 +45,19 @@ class DisposicionSerializer(serializers.ModelSerializer):
 			fecha = date(d_date.year, d_date.month, d_date.day) + monthdelta(i)
 			
 			#capital			
-			if p_capital=='mensual':
+			if p_capital=='mensual' and i!=0:
 				pago = monto/plazo
 				
-			elif p_capital=='trimestral' and i%3==0:
+			elif p_capital=='trimestral' and i%3==0 and i!=0:
 				pago = monto/plazo*3
 				
-			elif p_capital=='semestral' and i%6==0:
+			elif p_capital=='semestral' and i%6==0 and i!=0:
 				pago = monto/plazo*6
 				
-			elif p_capital=='anual' and i%12==0:
+			elif p_capital=='anual' and i%12==0 and i!=0:
 				pago = monto/plazo*12
 				
-			elif p_capital=='vencimiento' and i+1==plazo:
+			elif p_capital=='vencimiento' and i==plazo:
 				pago = monto
 				
 			#interes
