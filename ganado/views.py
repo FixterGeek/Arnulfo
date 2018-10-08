@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer, SaleNoteSerializer, FierroOSerializer, FierroNSerializer
 from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura, SaleNote, FierroO, FierroN
-from .pagination import AnimalPagination, LotePagination, FacturaPagination, SaleNotePagination
+from .pagination import AnimalPagination, LotePagination, FacturaPagination, SaleNotePagination ,AlimentoPagination
 from django.db.models import Q, Avg, Count, Min, Sum
 
 from datetime import datetime, timedelta
@@ -73,7 +73,7 @@ class AnimalViewSet(viewsets.ModelViewSet):
 class LoteViewSet(viewsets.ModelViewSet):
 	queryset = Lote.objects.all()
 	serializer_class = LoteSerializer
-	#pagination_class = LotePagination
+	pagination_class = LotePagination
 
 
 	def get_serializer_class(self):
@@ -106,6 +106,15 @@ class CorralViewSet(viewsets.ModelViewSet):
 class AlimentoViewSet(viewsets.ModelViewSet):
 	queryset = GastoAnimal.objects.all()
 	serializer_class = AlimentoSerializer
+	pagination_class = AlimentoPagination
+
+	def get_queryset(self, *args, **kwargs):
+		query = self.request.GET.get("q")
+		queryset_list = super(AlimentoViewSet, self).get_queryset()
+		if query:
+			queryset_list = queryset_list.filter(tipo=query)
+
+		return queryset_list
 
 class PesoViewSet(viewsets.ModelViewSet):
 	queryset = Peso.objects.all()
@@ -155,6 +164,9 @@ class ResumenView(APIView):
 		cdpPromedioCash = 0
 		# (ultima_pesada - peso_inicial)/(fecha_ultima_pesada - fecha_inicial) y luego promediar el de todos los aretes activos
 		for a in aretes:
+			a_alimentos_kg = 1
+			a_alimentos_cash = 1
+			a_vacunas_cash = 1
 			if len(a.aliments.all()) >= 1:
 				a_alimentos_kg = 0
 				a_alimentos_cash = 0

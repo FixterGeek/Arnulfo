@@ -26,12 +26,28 @@ class Disposicion(models.Model):
 	plazo = models.IntegerField()
 	fecha_inicio = models.DateTimeField(auto_now_add=False, db_index=True)
 	fecha_vencimiento = models.DateTimeField(auto_now_add=False, db_index=True)
-	tasa = models.IntegerField()
-	gracia = models.IntegerField()
+	tasa = models.DecimalField(decimal_places=2, max_digits=5)
+	gracia = models.DecimalField(decimal_places=2, max_digits=5)
 	periodo_intereses = models.CharField(max_length=100, choices=INTERESES)
 	periodo_capital = models.CharField(max_length=100, choices=CAPITAL)
+	numero = models.IntegerField(null=True, blank=True)
 
 	def __unicode__(self):
 		return self.id
+
+class Recibo(models.Model):
+
+	paid = models.BooleanField(default=False)
+	disposicion = models.ForeignKey(Disposicion, related_name="recibos", on_delete=models.CASCADE)
+	capital = models.DecimalField(max_digits=10, decimal_places=2)
+	intereses = models.DecimalField(max_digits=10, decimal_places=2)
+	saldo = models.DecimalField(max_digits=10, decimal_places=2)
+	fecha = models.DateField(auto_now_add=False, db_index=True)
+
+	def __unicode__(self):
+		return self.id
+	
+	
+		
 
 
