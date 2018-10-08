@@ -46,6 +46,9 @@ class Recibo(models.Model):
 
 	def __unicode__(self):
 		return self.id
+
+	class Meta:
+        ordering = ['id']
 	
 	
 		
