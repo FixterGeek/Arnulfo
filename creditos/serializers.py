@@ -62,9 +62,9 @@ class DisposicionSerializer(serializers.ModelSerializer):
 				
 			#interes
 			if p_interes=='mensual' and i!=0:
-				intereses = saldo_a*(tasa/100)/plazo		
+				intereses = saldo_a*(tasa/100)/12		
 			elif p_interes=='vencimiento' and i==plazo:			
-				intereses = monto*(tasa/100)/plazo
+				intereses = (monto*(tasa/100)/12)*plazo
 
 			#saldo
 			saldo = saldo_a-pago
