@@ -30,7 +30,7 @@ class Disposicion(models.Model):
 	gracia = models.DecimalField(decimal_places=2, max_digits=5)
 	periodo_intereses = models.CharField(max_length=100, choices=INTERESES)
 	periodo_capital = models.CharField(max_length=100, choices=CAPITAL)
-	numero = models.IntegerField(null=True, blank=True)
+	numero = models.CharField(null=True, blank=True, max_length=100)
 
 	def __unicode__(self):
 		return self.id

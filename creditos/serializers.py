@@ -3,6 +3,7 @@ from monthdelta import monthdelta
 import calendar
 from rest_framework import serializers
 from .models import Disposicion, Acreedor, Recibo
+import decimal
 
 
 
@@ -59,6 +60,8 @@ class DisposicionSerializer(serializers.ModelSerializer):
 				
 			elif p_capital=='vencimiento' and i==plazo:
 				pago = monto
+			
+			pago = decimal.Decimal(pago)
 				
 			#interes
 			if p_interes=='mensual' and i!=0:
@@ -66,11 +69,15 @@ class DisposicionSerializer(serializers.ModelSerializer):
 			elif p_interes=='vencimiento' and i==plazo:			
 				intereses = (monto*(tasa/100)/12)*plazo
 
+
+			intereses = decimal.Decimal(intereses)
+
 			#saldo
 			saldo = saldo_a-pago
 			saldo_a = saldo
 			
-			print(saldo)
+			saldo = decimal.Decimal(saldo)
+			print(pago, intereses, saldo)
 			Recibo.objects.create(disposicion=d,fecha=fecha, capital=pago, saldo=saldo, intereses=intereses)
 		return d
 
