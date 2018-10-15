@@ -40,8 +40,13 @@ class BasicPesoSerializer(serializers.ModelSerializer):
 		model = Peso
 		fields = '__all__'
 
+class JustAnimalSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Animal
+		fields = '__all__'
 
 class AlimentoSerializer(serializers.ModelSerializer):
+	animal=JustAnimalSerializer(many=False, read_only=True)
 	class Meta:
 		model = GastoAnimal
 		fields = '__all__'
@@ -139,10 +144,7 @@ class BasicAnimalSerializer(serializers.ModelSerializer):
 		model = Animal
 		fields = '__all__'
 
-class JustAnimalSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Animal
-		fields = '__all__'
+
 
 class PesoSerializer(serializers.ModelSerializer):
 	animal = BasicAnimalSerializer(many=False, read_only=True)
