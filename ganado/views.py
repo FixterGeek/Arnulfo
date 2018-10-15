@@ -110,9 +110,18 @@ class AlimentoViewSet(viewsets.ModelViewSet):
 
 	def get_queryset(self, *args, **kwargs):
 		query = self.request.GET.get("q")
+		d1 = self.request.GET.get("d1")
+		d2 = self.request.GET.get("d2")
+		text = self.request.GET.get("text")
 		queryset_list = super(AlimentoViewSet, self).get_queryset()
 		if query:
 			queryset_list = queryset_list.filter(tipo=query)
+		if d1 and d2:
+			queryset_list = queryset_list.filter(created__range=[d1, d2])
+		if text:
+			queryset_list = queryset_list.filter(
+				Q(animal__arete_rancho=text)|
+				Q(animal__lote=text))
 
 		return queryset_list
 
