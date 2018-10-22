@@ -47,6 +47,7 @@ class JustAnimalSerializer(serializers.ModelSerializer):
 
 class AlimentoSerializer(serializers.ModelSerializer):
 	animal=JustAnimalSerializer(many=False, read_only=True)
+	animal_id = serializers.PrimaryKeyRelatedField(queryset=Animal.objects.all(), write_only=True, allow_null=True, required=False, source='animal')
 	class Meta:
 		model = GastoAnimal
 		fields = '__all__'
