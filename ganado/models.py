@@ -148,6 +148,8 @@ class GastoAnimal(models.Model):
 
     def __unicode__(self):
         return "Gasto no. {}, {} ".format(self.id, self.tipo)
+    class Meta:
+        ordering = ["-created"]
 
 class Peso(models.Model):
   created = models.DateField(auto_now_add=True)

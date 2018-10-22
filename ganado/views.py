@@ -46,8 +46,8 @@ class AnimalViewSet(viewsets.ModelViewSet):
 	 	return AnimalSerializer 
 
 	def get_queryset(self, *args, **kwargs):
-		print(self.action)
-		print(self.request.data)
+		
+		
 
 		query = self.request.GET.get("q")
 		lote_query = self.request.GET.get("lote")
@@ -95,7 +95,7 @@ class LoteViewSet(viewsets.ModelViewSet):
 
 		
 			#lista.append(i)
-		#print(queryset_list[1].animals.all().filter(status=True))
+		#
 		
 		return queryset_list
 
@@ -181,7 +181,7 @@ class ResumenView(APIView):
 				a_alimentos_cash = 0
 				a_vacunas_cash = 0
 				for ga in a.aliments.all():
-					print(ga)
+					
 					if ga.tipo == 'Alimento':
 						a_alimentos_kg += ga.cantidad
 						a_alimentos_cash += ga.costo
