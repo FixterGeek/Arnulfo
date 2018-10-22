@@ -10,6 +10,12 @@ class AnimalAdmin(ImportExportModelAdmin):
     list_filter = ['lote__name','status']
     search_fields = ['arete_rancho', 'arete_siniga']
 
+class GastoAnimalAdmin(ImportExportModelAdmin):
+    resource_class = GastoAnimalResource
+    list_display = ['animal', 'created']
+    list_filter = ['animal','created']
+    #search_fields = ['arete_rancho', 'arete_siniga']
+
 
 class LoteAdmin(ImportExportModelAdmin):
     resource_class = LoteResource
@@ -18,8 +24,6 @@ class LoteAdmin(ImportExportModelAdmin):
 class CorralAdmin(ImportExportModelAdmin):
     resource_class = CorralResource
 
-class GastoAnimalAdmin(ImportExportModelAdmin):
-    resource_class = GastoAnimalResource
 
 class PesoAdmin(ImportExportModelAdmin):
     resource_class = PesoResource
