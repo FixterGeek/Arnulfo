@@ -235,3 +235,6 @@
 2018/10/23 16:48:51 [crit] 8792#0: *3379 SSL_do_handshake() failed (SSL: error:1408A0A0:SSL routines:SSL3_GET_CLIENT_HELLO:length too short) while SSL handshaking, client: 108.178.16.154, server: 0.0.0.0:443
 2018/10/23 19:39:14 [crit] 8795#0: *4148 SSL_do_handshake() failed (SSL: error:140A1175:SSL routines:SSL_BYTES_TO_CIPHER_LIST:inappropriate fallback) while SSL handshaking, client: 139.162.187.19, server: 0.0.0.0:443
 2018/10/23 19:39:19 [crit] 8792#0: *4498 SSL_do_handshake() failed (SSL: error:14094085:SSL routines:SSL3_READ_BYTES:ccs received early) while SSL handshaking, client: 139.162.187.19, server: 0.0.0.0:443
+2018/10/29 03:27:06 [crit] 19966#0: *393 SSL_do_handshake() failed (SSL: error:1408A0A0:SSL routines:SSL3_GET_CLIENT_HELLO:length too short) while SSL handshaking, client: 108.178.16.154, server: 0.0.0.0:443
+2018/11/01 20:36:57 [crit] 12553#0: *14314 SSL_do_handshake() failed (SSL: error:1408A0A0:SSL routines:SSL3_GET_CLIENT_HELLO:length too short) while SSL handshaking, client: 108.178.16.154, server: 0.0.0.0:443
+2018/11/04 23:14:46 [crit] 9926#0: *30599 SSL_do_handshake() failed (SSL: error:1408A0A0:SSL routines:SSL3_GET_CLIENT_HELLO:length too short) while SSL handshaking, client: 108.178.16.154, server: 0.0.0.0:443
