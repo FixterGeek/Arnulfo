@@ -48,7 +48,7 @@ class Recibo(models.Model):
 		return self.id
 
 	class Meta:
-		ordering = ['id']
+		ordering = ['fecha']
 	
 	
 		
