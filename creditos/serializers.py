@@ -5,22 +5,37 @@ from rest_framework import serializers
 from .models import Disposicion, Acreedor, Recibo
 import decimal
 
+class BasicDisposicionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Disposicion
+		fields = '__all__'
+
+class ReciboSerializer(serializers.ModelSerializer):
+	disposicion = BasicDisposicionSerializer(many=False, read_only=True)
+	class Meta:
+		model = Recibo
+		fields = '__all__'
 
 
-class ReciboBasicSerializer(serializers.ModelSerializer):
+class ReciboBasicSerializer(serializers.ModelSerializer):	
 	class Meta:
 		model = Recibo
 		fields = '__all__'
 
 class AcreedorSerializer(serializers.ModelSerializer):
-	# disposiciones = DisposicionBasicSerializer(many=True, read_only=True)
+	disposiciones = BasicDisposicionSerializer(many=True, read_only=True)
+	class Meta:
+		model = Acreedor
+		fields = '__all__'
+
+class BasicAcreedorSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Acreedor
 		fields = '__all__'
 
 class DisposicionSerializer(serializers.ModelSerializer):
 	recibos = ReciboBasicSerializer(many=True, read_only=True)
-	acreedor = AcreedorSerializer(many=False, read_only=True)
+	acreedor = BasicAcreedorSerializer(many=False, read_only=True)
 	acreedor_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Acreedor.objects.all(), write_only=True, source='acreedor', required=False)
 	class Meta:
 		model = Disposicion
@@ -83,8 +98,23 @@ class DisposicionSerializer(serializers.ModelSerializer):
 
 
 	def update(self, instance, validated_data):
-		Recibo.objects.filter(disposicion=instance).delete()
 		
+		
+		#instance.acreedor = validated_data.get('',instance.acreedor)
+		instance.paid = validated_data.get('paid',instance.paid)
+		instance.tipo_credito = validated_data.get('tipo_credito',instance.tipo_credito)
+		instance.monto = validated_data.get('monto',instance.monto)
+		instance.plazo = validated_data.get('plazo',instance.plazo)
+		instance.fecha_inicio = validated_data.get('fecha_inicio',instance.fecha_inicio)
+		instance.fecha_vencimiento = validated_data.get('fecha_vencimiento',instance.fecha_vencimiento)
+		instance.tasa = validated_data.get('tasa',instance.tasa)
+		instance.gracia = validated_data.get('gracia',instance.gracia)
+		instance.periodo_intereses = validated_data.get('periodo_intereses',instance.periodo_intereses)
+		instance.periodo_capital = validated_data.get('periodo_capital',instance.periodo_capital)
+		instance.numero = validated_data.get('numero',instance.numero)
+		instance.save()
+		#modify all the recipets
+		Recibo.objects.filter(disposicion=instance).delete()		
 		plazo = validated_data.pop('plazo')
 		monto = validated_data.pop('monto')
 		p_capital = validated_data.pop('periodo_capital')
@@ -92,8 +122,8 @@ class DisposicionSerializer(serializers.ModelSerializer):
 		d_date = validated_data.pop('fecha_inicio')
 		tasa = validated_data.pop('tasa')
 		saldo_a = monto
-		#generando los recibos
-		#Recibo.objects.create(disposicion=d,fecha=d_date, capital=0, saldo=monto, intereses=0)
+		
+		
 		for i in range(0,plazo+1):			
 			pago=0
 			saldo=0			
@@ -135,7 +165,6 @@ class DisposicionSerializer(serializers.ModelSerializer):
 			saldo = decimal.Decimal(saldo)
 			print(pago, intereses, saldo)
 			Recibo.objects.create(disposicion=instance,fecha=fecha, capital=pago, saldo=saldo, intereses=intereses)
-
+ 
 		return instance
-
 
