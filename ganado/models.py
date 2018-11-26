@@ -134,7 +134,7 @@ class GastoAnimal(models.Model):
     TIPO=(
     ('Alimento','Alimento'),
     ('Vacuna', 'Vacuna'))
-    created = models.DateField(auto_now_add=True, blank=True, null=True)
+    created = models.DateField(auto_now_add=False, blank=True, null=True)
     animal = models.ForeignKey(Animal, related_name='aliments', on_delete=models.PROTECT, null=True, blank=True)
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.DecimalField(max_digits=10, decimal_places=2)
@@ -142,6 +142,9 @@ class GastoAnimal(models.Model):
     tipo = models.CharField(max_length=100, choices=TIPO, blank=True, null=True)
     formula = models.ForeignKey(Formula, related_name='gastos_animal', on_delete=models.PROTECT, blank=True, null=True) 
     vacuna = models.ForeignKey(Vacuna, related_name='gastos_animal',  on_delete=models.PROTECT, blank=True, null=True)
+    insumo = models.CharField(max_length=100, null=True, blank=True)
+    insumo_q = models.IntegerField(blank=True, null=True)
+    insumo_cost = models.IntegerField(blank=True, null=True)
     
     # def __str__(self):
     #     return "Gasto no. {}, {} ".format(self.id, self.tipo)
