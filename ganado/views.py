@@ -120,8 +120,7 @@ class AlimentoViewSet(viewsets.ModelViewSet):
 			queryset_list = queryset_list.filter(created__range=[d1, d2])
 		if text:
 			queryset_list = queryset_list.filter(
-				Q(animal__arete_rancho=text)|
-				Q(animal__lote=text))
+				Q(animal__arete_rancho__icontains=text))
 
 		return queryset_list
 
