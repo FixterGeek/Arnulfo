@@ -119,3 +119,4 @@
 2018/11/09 19:14:38 [error] 8130#0: *83 open() "/home/ubuntu/rancho-arnulfo/Arnulfo/static/rest_framework/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 201.149.78.218, server: rancho.davidzavala.me, request: "GET /static/rest_framework/css/bootstrap.min.css.map HTTP/1.1", host: "rancho.davidzavala.me"
 2018/11/12 16:16:21 [crit] 8128#0: *604 SSL_do_handshake() failed (SSL: error:1408A0A0:SSL routines:SSL3_GET_CLIENT_HELLO:length too short) while SSL handshaking, client: 108.178.16.154, server: 0.0.0.0:443
 2018/11/15 21:17:53 [crit] 8130#0: *25318 SSL_do_handshake() failed (SSL: error:1408A0A0:SSL routines:SSL3_GET_CLIENT_HELLO:length too short) while SSL handshaking, client: 108.178.16.154, server: 0.0.0.0:443
+2018/11/30 13:48:47 [crit] 15734#0: *7355 SSL_do_handshake() failed (SSL: error:1408A0A0:SSL routines:SSL3_GET_CLIENT_HELLO:length too short) while SSL handshaking, client: 108.178.16.154, server: 0.0.0.0:443
