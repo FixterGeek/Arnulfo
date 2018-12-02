@@ -116,7 +116,7 @@ class AlimentoViewSet(viewsets.ModelViewSet):
 		lote = self.request.GET.get("lote")
 		queryset_list = super(AlimentoViewSet, self).get_queryset()
 		if lote:
-			queryset_list = queryset_list.filter(animal__lote__name=query)
+			queryset_list = queryset_list.filter(animal__lote__name__iexact=lote)
 		if query:
 			queryset_list = queryset_list.filter(tipo=query)
 		if d1 and d2:
