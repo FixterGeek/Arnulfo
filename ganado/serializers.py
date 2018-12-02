@@ -41,6 +41,7 @@ class BasicPesoSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class JustAnimalSerializer(serializers.ModelSerializer):
+	lote = BasicLoteSerializer(many=False, read_only=True)
 	class Meta:
 		model = Animal
 		fields = '__all__'
