@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer, SaleNoteSerializer, FierroOSerializer, FierroNSerializer
+from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerializer, LoteSerializer, AlimentoSerializer, BasicAnimalSerializer, BasicLoteSerializer, PesoSerializer, BasicPesoSerializer, RazaSerializer, FacturaSerializer, SaleNoteSerializer, FierroOSerializer, FierroNSerializer, JustAnimalSerializer
 from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura, SaleNote, FierroO, FierroN
 from .pagination import AnimalPagination, LotePagination, FacturaPagination, SaleNotePagination ,AlimentoPagination
-from django.db.models import Q, Avg, Count, Min, Sum
+from django.db.models import Q, Avg, Count, Min,Max,  Sum
 
 from datetime import datetime, timedelta
 
@@ -222,6 +222,61 @@ class ResumenView(APIView):
 				
 		}
 		return Response(data)
+
+
+
+class AggregatedSerializer(serializers.ModelSerializer):
+	peso_final = serializers.DecimalField(max_digits=20, decimal_places=4)
+	costo_alimentos = serializers.DecimalField(max_digits=20, decimal_places=4)
+	kg_alimento = serializers.DecimalField(max_digits=20, decimal_places=4)
+	class Meta:
+		model = Animal
+		fields = '__all__'
+
+
+class ReportesView(APIView):
+	def get(self, request):
+		#Getting the aretes, might add filters...
+		vacas = Animal.objects.all()
+
+
+
+		#pesadas
+		vacas = vacas.annotate(
+			peso_final=(Max('pesadas__peso')),
+			costo_alimentos=(Sum('aliments__costo', filter=Q(aliments__tipo='Alimento'))),
+			kg_alimento=(Sum('aliments__cantidad', filter=Q(aliments__tipo='Alimento'))),
+			costo_vacunas=(Sum('aliments__costo', filter=Q(aliments__tipo='Vacuna'))),)
+
+		# conversion = kghechos/comida consumida)
+		# rendimienti = comida consumida/kg hechos)
+
+		# All global values
+		alimento = GastoAnimal.objects.all().filter(tipo='Alimento').aggregate(costo=Sum('costo'), kg=Sum('cantidad'))
+		vacunas = GastoAnimal.objects.all().filter(tipo='Vacuna').aggregate(costo=Sum('costo'))
+		pesos = vacas.aggregate(Sum('peso_entrada'), Sum('peso_final'))
+		pesos['kg_hechos'] = pesos['peso_final__sum'] - pesos['peso_entrada__sum']
+		conversion = pesos['kg_hechos']/alimento['kg']
+		rendimiento = alimento['kg'] / pesos['kg_hechos']
+
+
+
+		#selected vacas
+		vacas = AggregatedSerializer(vacas, many=True)
+
+		data = {
+			"vacas":vacas.data,
+			"alimento": alimento,
+			"vacunas": vacunas,
+			"pesos":pesos,
+			"conversion":conversion,
+			"rendimiento":rendimiento
+
+		}
+		return Response(data)
+
+
+
 
 
 
