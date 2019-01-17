@@ -26,7 +26,7 @@ class SaleNote(models.Model):
     carro = models.CharField(max_length=100, blank=True, null=True)
     chofer = models.CharField(max_length=100, blank=True, null=True)
     flete = models.DecimalField(decimal_places=2, max_digits=8, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=False, blank=True, null=True)
 
     # def __str__(self):
     #     return 'nota {} del cliente'.format(self.id, self.client.client)
@@ -115,6 +115,11 @@ class Animal(models.Model):
 
     fierroO = models.ForeignKey(FierroO, related_name="animals", on_delete=models.SET_NULL, blank=True, null=True)
     fierroN = models.ForeignKey(FierroN, related_name="animals", on_delete=models.SET_NULL, blank=True, null=True)
+    #new things for reportes
+    days_in_ranch = models.CharField(max_length=100, blank=True, null=True)
+    kg_hechos = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
+    conversion = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
+    rendimiento = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
 
     def last_pesada(self):
         return self.pesadas.last()
