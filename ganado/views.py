@@ -242,6 +242,22 @@ class ReportesView(APIView):
         #Getting the aretes, might add filters...
         vacas = Animal.objects.all()
 
+        tipo = self.request.GET.get("tipo")
+        d1 = self.request.GET.get("d1")
+        d2 = self.request.GET.get("d2")
+        aretes = self.request.GET.get("aretes")
+        lote = self.request.GET.get("lote")
+        
+        if lote:
+            vacas = vacas.filter(animal__lote__name__iexact=lote)
+        if tipo:
+            vacas = vacas.filter(tipo=tipo)
+        if d1 and d2:
+            vacas = vacas.filter(created__range=[d1, d2])
+        #if aretes:
+         #   vacas = vacas.filter(
+          #      Q(animal__arete_rancho__icontains=text))        
+
 
         #pesadas
         vacas = vacas.annotate(
