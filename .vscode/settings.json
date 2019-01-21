@@ -1,4 +1,8 @@
 {
     "python.linting.pylintEnabled": false,
-    "python.pythonPath": "/Users/oswaldomartinez/Documents/Fixter/Projects/ArnuRanch/arnuenv/bin/python"
+    "python.pythonPath": "/Users/oswaldomartinez/Documents/Fixter/Projects/ArnuRanch/arnuenv/bin/python",
+    "workbench.colorCustomizations": {
+      "titleBar.activeBackground": "#48521f",
+      "titleBar.inactiveBackground": "#48521f"
+    }
 }
