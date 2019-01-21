@@ -227,12 +227,11 @@ class ResumenView(APIView):
         return Response(data)
 
 
-
+#second try to do reportes chingones
 class AggregatedSerializer(serializers.ModelSerializer):
     peso_final = serializers.DecimalField(max_digits=20, decimal_places=4)
     costo_alimentos = serializers.DecimalField(max_digits=20, decimal_places=4)
     kg_alimento = serializers.DecimalField(max_digits=20, decimal_places=4)
-    #days_in_ranch = serializers.CharField()
     class Meta:
         model = Animal
         fields = '__all__'
@@ -262,27 +261,35 @@ class ReportesView(APIView):
 
 
         # selected vacas to show
-        vacas_list = AggregatedSerializer(vacas, many=True)
+
         # conversion = kghechos/comida consumida)
         # rendimienti = comida consumida/kg hechos)
 
         # All global values
-        alimento = GastoAnimal.objects.all().filter(tipo='Alimento').aggregate(costo=Sum('costo'), kg=Sum('cantidad'))
-        vacunas = GastoAnimal.objects.all().filter(tipo='Vacuna').aggregate(costo=Sum('costo'))
-        pesos = vacas.aggregate(Sum('peso_entrada'), Sum('peso_final'), Avg('days_in_ranch'), Sum('kg_hechos'), Avg('conversion'), Avg('rendimiento'))
+        #alimento = GastoAnimal.objects.all().filter(tipo='Alimento').aggregate(costo=Sum('costo'), kg=Sum('cantidad'))
+        #vacunas = GastoAnimal.objects.all().filter(tipo='Vacuna').aggregate(costo=Sum('costo'))
+        globals = vacas.aggregate(Sum('peso_entrada'),
+                                Sum('peso_final'),
+                                Avg('days_in_ranch'),
+                                Sum('kg_hechos'),
+                                Avg('conversion'),
+                                Avg('rendimiento'),
+                                Sum('kg_alimento'),
+                                Sum('costo_alimentos'),
+                                Sum('costo_vacunas'))
         #pesos['kg_hechos'] = pesos['peso_final__sum'] - pesos['peso_entrada__sum']
         #conversion = pesos.kg_hechos/alimento['kg']
         #rendimiento = alimento['kg'] / pesos['kg_hechos']
 
-
+        vacas_list = AggregatedSerializer(vacas, many=True)
 
 
 
         data = {
             "vacas":vacas_list.data,
-            "alimento": alimento,
-            "vacunas": vacunas,
-            "pesos":pesos,
+            "globals": globals,
+            #"alimento": alimento,
+            #"vacunas": vacunas,
             #"conversion":conversion,
             #"rendimiento":rendimiento
 
