@@ -6,7 +6,7 @@ from .serializers import EditAnimalSerializer, AnimalSerializer, CorralSerialize
 from .models import Animal, Lote, GastoAnimal, Corral, Peso, Raza, Factura, SaleNote, FierroO, FierroN
 from .pagination import AnimalPagination, LotePagination, FacturaPagination, SaleNotePagination ,AlimentoPagination
 from django.db.models import Q, Avg, Count, Min,Max,  Sum
-from django.db.models import FloatField, CharField
+from django.db.models import FloatField, CharField, DecimalField
 from datetime import datetime, timedelta, date
 from django.core import serializers as dserializers
 
@@ -261,10 +261,10 @@ class ReportesView(APIView):
 
         #pesadas
         vacas = vacas.annotate(
-            peso_final=(Max('pesadas__peso')),
-            costo_alimentos=(Sum('aliments__costo', filter=Q(aliments__tipo='Alimento'))),
-            kg_alimento=(Sum('aliments__cantidad', filter=Q(aliments__tipo='Alimento'))),
-            costo_vacunas=(Sum('aliments__costo', filter=Q(aliments__tipo='Vacuna'))),
+            peso_final=(Max('pesadas__peso', output_field=DecimalField())),
+            costo_alimentos=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento'))),
+            kg_alimento=(Sum('aliments__cantidad', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento'))),
+            costo_vacunas=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Vacuna'))),
             )
         for v in vacas:
             if(v.last_pesada()) and v.aliments:
@@ -285,14 +285,14 @@ class ReportesView(APIView):
         #alimento = GastoAnimal.objects.all().filter(tipo='Alimento').aggregate(costo=Sum('costo'), kg=Sum('cantidad'))
         #vacunas = GastoAnimal.objects.all().filter(tipo='Vacuna').aggregate(costo=Sum('costo'))
         globals = vacas.aggregate(Sum('peso_entrada'),
-                                Sum('peso_final'),
-                                Avg('days_in_ranch'),
-                                Sum('kg_hechos'),
-                                Avg('conversion'),
-                                Avg('rendimiento'),
-                                Sum('kg_alimento'),
-                                Sum('costo_alimentos'),
-                                Sum('costo_vacunas'))
+                                Sum('peso_final', output_field=DecimalField()),
+                                Avg('days_in_ranch', output_field=CharField()),
+                                Sum('kg_hechos', output_field=DecimalField()),
+                                Avg('conversion', output_field=DecimalField()),
+                                Avg('rendimiento', output_field=DecimalField()),
+                                Sum('kg_alimento', output_field=DecimalField()),
+                                Sum('costo_alimentos', output_field=DecimalField()),
+                                Sum('costo_vacunas', output_field=DecimalField()))
         #pesos['kg_hechos'] = pesos['peso_final__sum'] - pesos['peso_entrada__sum']
         #conversion = pesos.kg_hechos/alimento['kg']
         #rendimiento = alimento['kg'] / pesos['kg_hechos']
