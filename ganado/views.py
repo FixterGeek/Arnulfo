@@ -261,10 +261,10 @@ class ReportesView(APIView):
 
         #pesadas
         vacas = vacas.annotate(
-            peso_final=(Max('pesadas__peso', output_field=DecimalField()max_digits=20, decimal_places=4)),
-            costo_alimentos=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento')max_digits=20, decimal_places=4)),
-            kg_alimento=(Sum('aliments__cantidad', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento')max_digits=20, decimal_places=4)),
-            costo_vacunas=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Vacuna')max_digits=20, decimal_places=4)),
+            peso_final=(Max('pesadas__peso', output_field=DecimalField(max_digits=20, decimal_places=4))),
+            costo_alimentos=(Sum('aliments__costo', output_field=DecimalField(max_digits=20, decimal_places=4), filter=Q(aliments__tipo='Alimento'))),
+            kg_alimento=(Sum('aliments__cantidad', output_field=DecimalField(max_digits=20, decimal_places=4), filter=Q(aliments__tipo='Alimento'))),
+            costo_vacunas=(Sum('aliments__costo', output_field=DecimalField(max_digits=20, decimal_places=4), filter=Q(aliments__tipo='Vacuna'))),
             )
         for v in vacas:
             if(v.last_pesada()) and v.aliments:
