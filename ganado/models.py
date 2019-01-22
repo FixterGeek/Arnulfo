@@ -116,7 +116,7 @@ class Animal(models.Model):
     fierroO = models.ForeignKey(FierroO, related_name="animals", on_delete=models.SET_NULL, blank=True, null=True)
     fierroN = models.ForeignKey(FierroN, related_name="animals", on_delete=models.SET_NULL, blank=True, null=True)
     #new things for reportes
-    days_in_ranch = models.CharField(max_length=100, blank=True, null=True)
+    days_in_ranch = models.CharField(max_length=100, blank=True, default="0")
     kg_hechos = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
     conversion = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
     rendimiento = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
