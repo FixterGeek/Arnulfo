@@ -284,7 +284,7 @@ class ReportesView(APIView):
         # All global values
         #alimento = GastoAnimal.objects.all().filter(tipo='Alimento').aggregate(costo=Sum('costo'), kg=Sum('cantidad'))
         #vacunas = GastoAnimal.objects.all().filter(tipo='Vacuna').aggregate(costo=Sum('costo'))
-        globals = vacas.aggregate(Sum('peso_entrada'),
+        globals = vacas.aggregate(Sum('peso_entrada', output_field=DecimalField()),
                                 Sum('peso_final', output_field=DecimalField()),
                                 Avg('days_in_ranch', output_field=CharField()),
                                 Sum('kg_hechos', output_field=DecimalField()),
