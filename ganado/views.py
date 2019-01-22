@@ -261,10 +261,10 @@ class ReportesView(APIView):
 
         #pesadas
         vacas = vacas.annotate(
-            peso_final=(Max('pesadas__peso', output_field=DecimalField())),
-            costo_alimentos=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento'))),
-            kg_alimento=(Sum('aliments__cantidad', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento'))),
-            costo_vacunas=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Vacuna'))),
+            peso_final=(Max('pesadas__peso', output_field=DecimalField()max_digits=20, decimal_places=4)),
+            costo_alimentos=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento')max_digits=20, decimal_places=4)),
+            kg_alimento=(Sum('aliments__cantidad', output_field=DecimalField(), filter=Q(aliments__tipo='Alimento')max_digits=20, decimal_places=4)),
+            costo_vacunas=(Sum('aliments__costo', output_field=DecimalField(), filter=Q(aliments__tipo='Vacuna')max_digits=20, decimal_places=4)),
             )
         for v in vacas:
             if(v.last_pesada()) and v.aliments:
@@ -284,15 +284,15 @@ class ReportesView(APIView):
         # All global values
         #alimento = GastoAnimal.objects.all().filter(tipo='Alimento').aggregate(costo=Sum('costo'), kg=Sum('cantidad'))
         #vacunas = GastoAnimal.objects.all().filter(tipo='Vacuna').aggregate(costo=Sum('costo'))
-        globals = vacas.aggregate(Sum('peso_entrada', output_field=DecimalField()),
-                                Sum('peso_final', output_field=DecimalField()),
-                                Avg('days_in_ranch', output_field=CharField()),
-                                Sum('kg_hechos', output_field=DecimalField()),
-                                Avg('conversion', output_field=DecimalField()),
-                                Avg('rendimiento', output_field=DecimalField()),
-                                Sum('kg_alimento', output_field=DecimalField()),
-                                Sum('costo_alimentos', output_field=DecimalField()),
-                                Sum('costo_vacunas', output_field=DecimalField()))
+        globals = vacas.aggregate(Sum('peso_entrada', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Sum('peso_final', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('days_in_ranch', output_field=CharField(max_length=100)),
+                                Sum('kg_hechos', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('conversion', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('rendimiento', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Sum('kg_alimento', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Sum('costo_alimentos', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Sum('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)))
         #pesos['kg_hechos'] = pesos['peso_final__sum'] - pesos['peso_entrada__sum']
         #conversion = pesos.kg_hechos/alimento['kg']
         #rendimiento = alimento['kg'] / pesos['kg_hechos']
