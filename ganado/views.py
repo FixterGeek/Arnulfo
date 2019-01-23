@@ -284,15 +284,22 @@ class ReportesView(APIView):
         # All global values
         #alimento = GastoAnimal.objects.all().filter(tipo='Alimento').aggregate(costo=Sum('costo'), kg=Sum('cantidad'))
         #vacunas = GastoAnimal.objects.all().filter(tipo='Vacuna').aggregate(costo=Sum('costo'))
-        globals = vacas.aggregate(Sum('peso_entrada', output_field=DecimalField(max_digits=20, decimal_places=4)),
+        globals = vacas.aggregate(
+                                Sum('peso_entrada', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('peso_entrada', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Sum('peso_final', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('peso_final', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Avg('days_in_ranch', output_field=CharField(max_length=100)),
                                 Sum('kg_hechos', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('kg_hechos', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Avg('conversion', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Avg('rendimiento', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Sum('kg_alimento', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('kg_alimento', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Sum('costo_alimentos', output_field=DecimalField(max_digits=20, decimal_places=4)),
-                                Sum('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)))
+                                Avg('costo_alimentos', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Sum('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)))
         #pesos['kg_hechos'] = pesos['peso_final__sum'] - pesos['peso_entrada__sum']
         #conversion = pesos.kg_hechos/alimento['kg']
         #rendimiento = alimento['kg'] / pesos['kg_hechos']
