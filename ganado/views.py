@@ -277,11 +277,11 @@ class ReportesView(APIView):
                 v.conversion = v.kg_hechos/v.kg_alimento
                 v.rendimiento = v.kg_alimento/v.kg_hechos
                 v.gdp = 0
-                v.cdp = 0
+                v.costo_por_dia = 0
                 #GDP y CDP
                 if(v.days_in_ranch.days>0):
                     v.gdp = v.kg_hechos/v.days_in_ranch.days
-                    v.cdp = v.costos_total/v.days_in_ranch.days
+                    v.costo_por_dia = v.costos_total/v.days_in_ranch.days
                 
                 v.save()
 
@@ -313,7 +313,7 @@ class ReportesView(APIView):
                                 Avg('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Avg('costos_total', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Sum('costos_total', output_field=DecimalField(max_digits=20, decimal_places=4)),
-                                Avg('cdp', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('costo_por_dia', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Avg('gdp', output_field=DecimalField(max_digits=20, decimal_places=4)))
         #pesos['kg_hechos'] = pesos['peso_final__sum'] - pesos['peso_entrada__sum']
         #conversion = pesos.kg_hechos/alimento['kg']
