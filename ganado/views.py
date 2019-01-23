@@ -231,6 +231,8 @@ class ResumenView(APIView):
 class AggregatedSerializer(serializers.ModelSerializer):
     peso_final = serializers.DecimalField(max_digits=20, decimal_places=4)
     costo_alimentos = serializers.DecimalField(max_digits=20, decimal_places=4)
+    costo_vacunas = serializers.DecimalField(max_digits=20, decimal_places=4)
+    costos_total = serializers.DecimalField(max_digits=20, decimal_places=4)
     kg_alimento = serializers.DecimalField(max_digits=20, decimal_places=4)
     class Meta:
         model = Animal
@@ -265,6 +267,8 @@ class ReportesView(APIView):
             costo_alimentos=(Sum('aliments__costo', output_field=DecimalField(max_digits=20, decimal_places=4), filter=Q(aliments__tipo='Alimento'))),
             kg_alimento=(Sum('aliments__cantidad', output_field=DecimalField(max_digits=20, decimal_places=4), filter=Q(aliments__tipo='Alimento'))),
             costo_vacunas=(Sum('aliments__costo', output_field=DecimalField(max_digits=20, decimal_places=4), filter=Q(aliments__tipo='Vacuna'))),
+            costos_total=(Sum('aliments__costo', output_field=DecimalField(max_digits=20, decimal_places=4))),
+
             )
         for v in vacas:
             if(v.last_pesada()) and v.aliments:
@@ -272,6 +276,7 @@ class ReportesView(APIView):
                 v.kg_hechos = v.peso_final - v.peso_entrada
                 v.conversion = v.kg_hechos/v.kg_alimento
                 v.rendimiento = v.kg_alimento/v.kg_hechos
+                v.costo_por_dia = v.days_in_ranch/v.costos_total
                 v.save()
 
 
@@ -299,7 +304,10 @@ class ReportesView(APIView):
                                 Sum('costo_alimentos', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Avg('costo_alimentos', output_field=DecimalField(max_digits=20, decimal_places=4)),
                                 Sum('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)),
-                                Avg('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)))
+                                Avg('costo_vacunas', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('costos_total', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Sum('costos_total', output_field=DecimalField(max_digits=20, decimal_places=4)),
+                                Avg('costo_por_dia', output_field=DecimalField(max_digits=20, decimal_places=4)))
         #pesos['kg_hechos'] = pesos['peso_final__sum'] - pesos['peso_entrada__sum']
         #conversion = pesos.kg_hechos/alimento['kg']
         #rendimiento = alimento['kg'] / pesos['kg_hechos']
