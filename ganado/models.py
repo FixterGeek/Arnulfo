@@ -122,7 +122,7 @@ class Animal(models.Model):
     rendimiento = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
     costo_por_dia = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
     gdp = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
-
+#yaa
     def last_pesada(self):
         return self.pesadas.last()
 
