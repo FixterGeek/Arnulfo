@@ -255,7 +255,7 @@ class ReportesView(APIView):
         if status:
             vacas = vacas.filter(status=status)
         if d1 and d2:
-            vacas = vacas.filter(created__range=[d1, d2])
+            vacas = vacas.filter(fecha_entrada__range=[d1, d2])
         #if aretes:
          #   vacas = vacas.filter(
           #      Q(animal__arete_rancho__icontains=text))        
